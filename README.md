@@ -1,5 +1,5 @@
 
-# <img src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/stair.jpeg">
+<img src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/stair.jpeg">
 <p align='center'>
   <a href="https://www.facebook.com/dannnyliang">
     <img height="30" src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/facebook.png">
@@ -26,19 +26,19 @@ Sharing my favorite tracks and artists. Welcome to follow my playlist.
 <ruby>
 <!--  No.4 -->
   <a href="https://open.spotify.com/track/4oQnPyy2nHdAKZmdhVSX4H">
-    <img width="160" src="https://i.scdn.co/image/ab67616d0000b2732ff4fab4c3434afe31a0e247">
+    <img width="140" src="https://i.scdn.co/image/ab67616d0000b2732ff4fab4c3434afe31a0e247">
   </a><!--  No.2 -->
   <a href="https://open.spotify.com/track/6oKeVXkFW8W91cyoWVgRHE">
-    <img width="190" src="https://i.scdn.co/image/ab67616d0000b2737a57c79de5138d173331183d">
+    <img width="170" src="https://i.scdn.co/image/ab67616d0000b2737a57c79de5138d173331183d">
   </a><!--  No.1 -->
   <a href="https://open.spotify.com/track/2HAnzQylxHwAEZWEWYfO24">
-    <img width="220" src="https://i.scdn.co/image/ab67616d0000b273b23d011101b874d8c82bc408">
+    <img width="200" src="https://i.scdn.co/image/ab67616d0000b273b23d011101b874d8c82bc408">
   </a><!--  No.3 -->
   <a href="https://open.spotify.com/track/7ioVfdcthcbdpZjUIsJfRB">
-    <img width="190" src="https://i.scdn.co/image/ab67616d0000b273170759124c0e2efbe5bd547d">
+    <img width="170" src="https://i.scdn.co/image/ab67616d0000b273170759124c0e2efbe5bd547d">
   </a><!--  No.5 -->
   <a href="https://open.spotify.com/track/3hQggci1I7XAq5tUYH3sMp">
-    <img width="160" src="https://i.scdn.co/image/ab67616d0000b27319195833e63c7aaa8cebf58a">
+    <img width="140" src="https://i.scdn.co/image/ab67616d0000b27319195833e63c7aaa8cebf58a">
   </a>
   <rt>🎗 🥈 🥇 🥉 🎗</rt>
 </ruby>
@@ -53,19 +53,19 @@ Sharing my favorite tracks and artists. Welcome to follow my playlist.
 <ruby>
 <!--  No.4 -->
   <a href="https://open.spotify.com/artist/7DZtdN4x13Amjw87cjdffb">
-    <img width="160" src="https://i.scdn.co/image/c35d749ca21ac90c2ac9d31170bffb527f617d14">
+    <img width="140" src="https://i.scdn.co/image/c35d749ca21ac90c2ac9d31170bffb527f617d14">
   </a><!--  No.2 -->
   <a href="https://open.spotify.com/artist/76B4kqqCUdVdAo9AG5LNWF">
-    <img width="190" src="https://i.scdn.co/image/74186cb20ba9ee3da9de40b213054edad8e433c6">
+    <img width="170" src="https://i.scdn.co/image/74186cb20ba9ee3da9de40b213054edad8e433c6">
   </a><!--  No.1 -->
   <a href="https://open.spotify.com/artist/4en7e0KjSkfa4sfLDhTc3m">
-    <img width="220" src="https://i.scdn.co/image/ab67616d0000b27396aa00a88e416064e7c8e5e3">
+    <img width="200" src="https://i.scdn.co/image/ab67616d0000b27396aa00a88e416064e7c8e5e3">
   </a><!--  No.3 -->
   <a href="https://open.spotify.com/artist/1YrtUPrWcPfgdl9BaD9nhd">
-    <img width="190" src="https://i.scdn.co/image/bcad4bbfda651ee0235a36b418de319f5b9de3c2">
+    <img width="170" src="https://i.scdn.co/image/bcad4bbfda651ee0235a36b418de319f5b9de3c2">
   </a><!--  No.5 -->
   <a href="https://open.spotify.com/artist/37J1PlAkhRK7yrZUtqaUpQ">
-    <img width="160" src="https://i.scdn.co/image/adc8c619e766119fabd784a257d6376a653d41ea">
+    <img width="140" src="https://i.scdn.co/image/adc8c619e766119fabd784a257d6376a653d41ea">
   </a>
   <rt>🎗 🥈 🥇 🥉 🎗</rt>
 </ruby>
