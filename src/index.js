@@ -1,30 +1,17 @@
-import api from "./api/index.js";
-import { ask } from "./utils.js";
-import generator from "./generator.js";
-import getReadme from "./api/getReadme.js";
-import transformer from "./transformer/index.js";
-import updateReadme from "./api/updateReadme.js";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
-const encoder = new TextEncoder();
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-async function generateReadme() {
-  const rawData = await api();
-  const data = transformer(rawData);
-
-  const currentReadme = await getReadme();
-  const readme = generator(data);
-
-  await Deno.writeFile("./preview.md", encoder.encode(readme));
-  let isConfirm = await ask(`Confirm update?[y/n]: `);
-  while (isConfirm !== "y" && isConfirm !== "n") {
-    isConfirm = await ask(`Confirm update?[y/n](Please input 'y' or 'n'): `);
-  }
-
-  if (isConfirm === "y") {
-    await updateReadme(readme, currentReadme.sha);
-  }
-
-  return;
-}
-
-await generateReadme();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
