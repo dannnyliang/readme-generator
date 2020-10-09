@@ -5,8 +5,9 @@ import {
   TextareaAutosize,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
+  all,
   append,
   equals,
   filter,
@@ -52,17 +53,16 @@ function App(props) {
 
   const getSelectHandler = (setState) => (id) =>
     setState(ifElse(includes(id), reject(equals(id)), append(id)));
-  const handleSubmit = async () => {
-    await updateReadme({
-      token: githubToken,
-      readme: readmeContent,
-      sha: readme.sha,
-      user,
-    });
-  };
 
   const needAuthSpotify = isEmpty(tracks) || isEmpty(artists);
   const needAuthGithub = isNil(user);
+  const invalidSelection =
+    selectedTrackIds.length !== 5 || selectedArtistIds.length !== 5;
+  const showPreview = all(equals(false), [
+    needAuthSpotify,
+    needAuthGithub,
+    invalidSelection,
+  ]);
 
   const selectedTracks = filter(
     (track) => includes(track.id, selectedTrackIds),
@@ -72,15 +72,30 @@ function App(props) {
     (artist) => includes(artist.id, selectedArtistIds),
     artists
   );
-  const readmeContent = generator({
-    tracks: selectedTracks,
-    artists: selectedArtists,
-    intro,
-  });
+  const readmeContent = useCallback(
+    () =>
+      generator({
+        tracks: selectedTracks,
+        artists: selectedArtists,
+        intro,
+      }),
+    [intro, selectedArtists, selectedTracks]
+  )();
+
+  const handleSubmit = async () => {
+    if (showPreview) {
+      await updateReadme({
+        token: githubToken,
+        readme: readmeContent,
+        sha: readme.sha,
+        user,
+      });
+    }
+  };
 
   return (
     <div className={className}>
-      <TopBar handleSubmit={handleSubmit} />
+      <TopBar handleSubmit={handleSubmit} submitDisabled={!showPreview} />
       <Container className="container">
         <Typography variant="h4">Top Tracks & Artists</Typography>
         <Grid container justify="center" spacing={3}>
@@ -99,9 +114,7 @@ function App(props) {
             />
           </Grid>
         </Grid>
-
         <Divider className="divider" />
-
         <Typography variant="h4">Personal Introduction</Typography>
         {needAuthGithub ? (
           <Typography className="warning" color="error">
@@ -121,17 +134,19 @@ function App(props) {
             </div>
           </>
         )}
-
         <Divider className="divider" />
-
         <Typography variant="h4">Preview</Typography>
-        {needAuthSpotify || needAuthGithub ? (
+        {(needAuthSpotify || needAuthGithub) && (
           <Typography className="warning" color="error">
             Please auth github or spotify account first!
           </Typography>
-        ) : (
-          <Preview readmeContent={readmeContent} />
         )}
+        {invalidSelection && (
+          <Typography className="warning" color="error">
+            Please select 5 tracks and 5 artists!
+          </Typography>
+        )}
+        {showPreview && <Preview readmeContent={readmeContent} />}
       </Container>
     </div>
   );

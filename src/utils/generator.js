@@ -16,7 +16,24 @@ function getSizeLevelFromRank(rank) {
   }
 }
 
-export default function ({ tracks, artists, intro }) {
+export default function ({
+  tracks: unsortedTracks,
+  artists: unsortedArtists,
+  intro,
+}) {
+  const tracks = unsortedTracks.map((track, index) => ({
+    ...track,
+    rank: index + 1,
+  }));
+  const artists = unsortedArtists.map((artist, index) => ({
+    ...artist,
+    rank: index + 1,
+  }));
+
+  if (tracks.length !== 5 || artists.length !== 5) {
+    return "";
+  }
+
   const centeredTracks = isEmpty(tracks)
     ? []
     : [tracks[3], tracks[1], tracks[0], tracks[2], tracks[4]];

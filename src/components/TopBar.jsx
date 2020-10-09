@@ -25,7 +25,7 @@ function HideOnScroll(props) {
 }
 
 function TopBar(props) {
-  const { className, handleSubmit } = props;
+  const { className, submitDisabled, handleSubmit } = props;
   return (
     <div className={className}>
       <HideOnScroll>
@@ -36,7 +36,12 @@ function TopBar(props) {
             </Typography>
             <AuthSpotify />
             <AuthGithub />
-            <Button variant="outlined" color="secondary" onClick={handleSubmit}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              disabled={submitDisabled}
+              onClick={handleSubmit}
+            >
               submit
             </Button>
           </Toolbar>
@@ -49,6 +54,7 @@ function TopBar(props) {
 
 TopBar.propTypes = {
   className: PropTypes.string,
+  submitDisabled: PropTypes.bool,
   handleSubmit: PropTypes.func,
 };
 
