@@ -1,16 +1,20 @@
 import {
   Avatar,
   Checkbox,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 import React, { memo } from "react";
-import { equals, includes } from "ramda";
+import { equals, includes, isEmpty } from "ramda";
 
 import PropTypes from "prop-types";
+import { grey } from "@material-ui/core/colors";
+import styled from "styled-components";
 
 export function artistDataTransformer(items) {
   return items.map((item, index) => ({
@@ -40,35 +44,66 @@ function ArtistRow(props) {
 }
 
 function ArtistTable(props) {
-  const { artists, selectedIds, handleSelect } = props;
+  const { className, artists, selectedIds, handleSelect } = props;
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell padding="checkbox" />
-          <TableCell>Rank</TableCell>
-          <TableCell>Image</TableCell>
-          <TableCell>Name</TableCell>
-        </TableRow>
-      </TableHead>
+    <div className={className}>
+      <Paper>
+        <Typography className="title" variant="h6">
+          Top Artists
+        </Typography>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox" />
+              <TableCell>Rank</TableCell>
+              <TableCell>Image</TableCell>
+              <TableCell>Name</TableCell>
+            </TableRow>
+          </TableHead>
 
-      <TableBody>
-        {artists.map((row) => (
-          <ArtistRow
-            key={row.id}
-            row={row}
-            isSelected={includes(row.id, selectedIds)}
-            handleSelect={handleSelect}
-          />
-        ))}
-      </TableBody>
-    </Table>
+          <TableBody>
+            {artists.map((row) => (
+              <ArtistRow
+                key={row.id}
+                row={row}
+                isSelected={includes(row.id, selectedIds)}
+                handleSelect={handleSelect}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        {isEmpty(artists) && (
+          <Typography className="warning" color="error">
+            Please auth spotify account first!
+          </Typography>
+        )}
+      </Paper>
+    </div>
   );
 }
 
-ArtistTable.propTypes = {};
+ArtistTable.propTypes = {
+  className: PropTypes.string,
+  selectedIds: PropTypes.arrayOf(PropTypes.string),
+  artists: PropTypes.arrayOf(PropTypes.object),
+  handleSelect: PropTypes.func,
+};
 
-export default memo(ArtistTable, (prevProps, nextProps) =>
+const StyledArtistTable = styled(ArtistTable)`
+  .title,
+  .warning {
+    padding: 8px 16px;
+  }
+
+  thead {
+    background-color: ${grey[700]};
+    * {
+      color: white;
+    }
+  }
+`;
+
+export default memo(StyledArtistTable, (prevProps, nextProps) =>
   equals(prevProps, nextProps)
 );

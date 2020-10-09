@@ -1,14 +1,17 @@
-import { Button } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
+
 import PropTypes from "prop-types";
 import React from "react";
+import Spotify from "../icons/Spotify";
 import { getSpotifyAuthorizeLink } from "../utils";
 import getSpotifyToken from "../apis/getSpotifyToken";
 import queryString from "query-string";
+import styled from "styled-components";
 import { useQuery } from "react-query";
 
-function AuthSpotify() {
+function AuthSpotify(props) {
+  const { className } = props;
   const { code } = queryString.parse(window.location.search);
-  const authorizeLink = getSpotifyAuthorizeLink();
 
   useQuery(["getSpotifyToken", code], getSpotifyToken, {
     onSuccess: (data) => {
@@ -20,17 +23,27 @@ function AuthSpotify() {
   });
 
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={!authorizeLink}
-      href={authorizeLink}
-    >
-      auth spotify!
-    </Button>
+    <div className={className}>
+      <Tooltip title="Auth Spotify">
+        <a href={getSpotifyAuthorizeLink()}>
+          <IconButton>
+            <Spotify />
+          </IconButton>
+        </a>
+      </Tooltip>
+    </div>
   );
 }
 
-AuthSpotify.propTypes = {};
+AuthSpotify.propTypes = {
+  className: PropTypes.string,
+};
 
-export default AuthSpotify;
+const StyledAuthSpotify = styled(AuthSpotify)`
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+`;
+
+export default StyledAuthSpotify;
