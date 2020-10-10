@@ -1,8 +1,16 @@
 import { getLocalStorageToken } from "../utils";
+import { isNil } from "ramda";
 
 export default function (key, code) {
   const { githubToken } = getLocalStorageToken();
   if (githubToken) return githubToken;
+
+  if (isNil(code))
+    return {
+      error: {
+        message: "No authorization code provided",
+      },
+    };
 
   const {
     REACT_APP_GITHUB_CLIENT_ID,
@@ -28,5 +36,15 @@ export default function (key, code) {
     /** {@link https://github.com/isaacs/github/issues/330} */
     "https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token",
     requestOptions
-  ).then((res) => res.json());
+  )
+    .then((res) => res.json())
+    .then((res) =>
+      res.error
+        ? {
+            error: {
+              message: res.error_description,
+            },
+          }
+        : res
+    );
 }

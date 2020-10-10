@@ -3,12 +3,11 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 import { QueryCache, ReactQueryCacheProvider } from "react-query";
-import React, { createContext } from "react";
 
 import App from "./App";
+import React from "react";
 import ReactDOM from "react-dom";
-
-export const DataContext = createContext();
+import { SnackbarProvider } from "notistack";
 
 const queryCache = new QueryCache({
   defaultConfig: {
@@ -20,11 +19,11 @@ const queryCache = new QueryCache({
 
 ReactDOM.render(
   <React.StrictMode>
-    <DataContext.Provider value={{ tracks: [], artists: [] }}>
-      <ReactQueryCacheProvider queryCache={queryCache}>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <SnackbarProvider>
         <App />
-      </ReactQueryCacheProvider>
-    </DataContext.Provider>
+      </SnackbarProvider>
+    </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

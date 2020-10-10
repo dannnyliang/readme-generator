@@ -1,5 +1,7 @@
 import { map, pipe, prop, take } from "ramda";
 
+import queryString from "query-string";
+
 export function getSpotifyAuthorizeLink() {
   const {
     REACT_APP_SPOTIFY_CLIENT_ID,
@@ -39,3 +41,10 @@ export function getLocalStorageToken() {
 }
 
 export const getDefaultSelection = pipe(take(5), map(prop("id")));
+
+export function getAuthorizationCode(service) {
+  if (!window.location.pathname.includes(service)) return;
+
+  const { code } = queryString.parse(window.location.search);
+  return code;
+}

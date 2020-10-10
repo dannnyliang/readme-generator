@@ -1,33 +1,68 @@
-import { IconButton, Tooltip } from "@material-ui/core";
+import { CircularProgress, IconButton, Tooltip } from "@material-ui/core";
+import React, { memo, useEffect } from "react";
+import {
+  getAuthorizationCode,
+  getLocalStorageToken,
+  getSpotifyAuthorizeLink,
+} from "../utils";
+import getSpotifyToken, { isTokenExpired } from "../apis/getSpotifyToken";
 
 import PropTypes from "prop-types";
-import React from "react";
 import Spotify from "../icons/Spotify";
-import { getSpotifyAuthorizeLink } from "../utils";
-import getSpotifyToken from "../apis/getSpotifyToken";
-import queryString from "query-string";
+import { isNil } from "ramda";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { useSnackbar } from "notistack";
 
 function AuthSpotify(props) {
   const { className } = props;
-  const { code } = queryString.parse(window.location.search);
+  const code = getAuthorizationCode("spotify");
+  const { spotifyToken } = getLocalStorageToken();
 
-  useQuery(["getSpotifyToken", code], getSpotifyToken, {
-    onSuccess: (data) => {
-      if (!data.error) {
-        /** side effect */
-        window.localStorage.setItem("spotifyToken", JSON.stringify(data));
-      }
-    },
-  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { data, isLoading } = useQuery(
+    ["getSpotifyToken", code],
+    getSpotifyToken,
+    {
+      enabled: !isNil(code),
+      onSuccess: (data) => {
+        if (data.error) {
+          enqueueSnackbar(`Spotify: ${data.error.message}`, {
+            variant: "error",
+          });
+        }
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (data && !data.error && !spotifyToken) {
+      window.localStorage.setItem(
+        "spotifyToken",
+        JSON.stringify({
+          ...data,
+          validTime: new Date(
+            Date.now() + data.expires_in * 1000
+          ).toISOString(),
+        })
+      );
+      window.location.replace("/");
+    }
+  }, [data, spotifyToken]);
 
   return (
     <div className={className}>
       <Tooltip title="Auth Spotify">
-        <a href={getSpotifyAuthorizeLink()}>
+        <a
+          href={
+            spotifyToken && !isTokenExpired(spotifyToken.validTime)
+              ? "/"
+              : getSpotifyAuthorizeLink()
+          }
+        >
           <IconButton>
-            <Spotify />
+            {isLoading ? <CircularProgress /> : <Spotify />}
           </IconButton>
         </a>
       </Tooltip>
@@ -46,4 +81,4 @@ const StyledAuthSpotify = styled(AuthSpotify)`
   }
 `;
 
-export default StyledAuthSpotify;
+export default memo(StyledAuthSpotify);

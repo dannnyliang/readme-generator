@@ -1,8 +1,22 @@
 import { getLocalStorageToken } from "../utils";
+import { isNil } from "ramda";
 
-export default function (key, code) {
+export const isTokenExpired = (validTime) =>
+  new Date(validTime).getTime() < Date.now();
+
+export default async function (key, code) {
   const { spotifyToken } = getLocalStorageToken();
-  if (spotifyToken) return spotifyToken;
+  if (spotifyToken && !isTokenExpired(spotifyToken.validTime)) {
+    return spotifyToken;
+  }
+
+  if (isNil(code))
+    return {
+      error: {
+        message: "No authorization code provided",
+      },
+    };
+  window.localStorage.removeItem("spotifyToken");
 
   const {
     REACT_APP_SPOTIFY_CLIENT_ID,
@@ -30,8 +44,15 @@ export default function (key, code) {
     redirect: "follow",
   };
 
-  return fetch(
-    "https://accounts.spotify.com/api/token",
-    requestOptions
-  ).then((res) => res.json());
+  return fetch("https://accounts.spotify.com/api/token", requestOptions)
+    .then((res) => res.json())
+    .then((res) =>
+      res.error
+        ? {
+            error: {
+              message: res.error_description,
+            },
+          }
+        : res
+    );
 }

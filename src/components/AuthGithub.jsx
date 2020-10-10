@@ -1,33 +1,54 @@
-import { IconButton, Tooltip } from "@material-ui/core";
+import { CircularProgress, IconButton, Tooltip } from "@material-ui/core";
+import React, { memo, useEffect } from "react";
+import {
+  getAuthorizationCode,
+  getGithubAuthorizeLink,
+  getLocalStorageToken,
+} from "../utils";
 
 import Github from "../icons/Github";
 import PropTypes from "prop-types";
-import React from "react";
-import { getGithubAuthorizeLink } from "../utils";
 import getGithubToken from "../apis/getGithubToken";
-import queryString from "query-string";
+import { isNil } from "ramda";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { useSnackbar } from "notistack";
 
 function AuthGithub(props) {
   const { className } = props;
-  const { code } = queryString.parse(window.location.search);
+  const { githubToken } = getLocalStorageToken();
+  const code = getAuthorizationCode("github");
 
-  useQuery(["getGithubToken", code], getGithubToken, {
-    onSuccess: (data) => {
-      if (data && !data.error) {
-        /** side effect */
-        window.localStorage.setItem("githubToken", JSON.stringify(data));
-      }
-    },
-  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { data, isLoading } = useQuery(
+    ["getGithubToken", code],
+    getGithubToken,
+    {
+      enabled: !isNil(code),
+      onSuccess: (data) => {
+        if (data.error) {
+          enqueueSnackbar(`Github: ${data.error.message}`, {
+            variant: "error",
+          });
+        }
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (data && !data.error && !githubToken) {
+      window.localStorage.setItem("githubToken", JSON.stringify(data));
+      window.location.replace("/");
+    }
+  }, [data, githubToken]);
 
   return (
     <div className={className}>
       <Tooltip title="Auth Spotify">
-        <a href={getGithubAuthorizeLink()}>
+        <a href={githubToken ? "/" : getGithubAuthorizeLink()}>
           <IconButton>
-            <Github />
+            {isLoading ? <CircularProgress /> : <Github />}
           </IconButton>
         </a>
       </Tooltip>
@@ -46,4 +67,4 @@ const StyledAuthGithub = styled(AuthGithub)`
   }
 `;
 
-export default StyledAuthGithub;
+export default memo(StyledAuthGithub);
