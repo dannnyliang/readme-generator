@@ -1,6 +1,5 @@
-export default async function ({ token, readme, sha, user }) {
+export default async function ({ message, token, readme, sha, user }) {
   if (!token?.access_token || !user?.login || !user?.email) return;
-  const date = new Date();
 
   try {
     const response = await fetch(
@@ -12,7 +11,7 @@ export default async function ({ token, readme, sha, user }) {
           Accept: "application/vnd.github.v3+json",
         },
         body: JSON.stringify({
-          message: `update on ${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+          message,
           committer: { name: user.login, email: user.email },
           content: btoa(unescape(encodeURIComponent(readme))),
           sha,

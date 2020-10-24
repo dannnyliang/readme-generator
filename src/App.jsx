@@ -23,18 +23,14 @@ import Preview from "./components/Preview";
 import TopBar from "./components/TopBar";
 import TrackTable from "./components/TrackTable";
 import generator from "./utils/generator";
-import { getLocalStorageToken } from "./utils";
-import putReadme from "./apis/putReadme";
 import styled from "styled-components";
 import useArtists from "./hooks/useArtists";
 import useGithubUser from "./hooks/useGithubUser";
-import { useMutation } from "react-query";
 import useReadme from "./hooks/useReadme";
 import useTracks from "./hooks/useTracks";
 
 function App(props) {
   const { className } = props;
-  const { githubToken } = getLocalStorageToken();
 
   const [selectedTrackIds, setSelectedTrackIds] = useState([]);
   const [selectedArtistIds, setSelectedArtistIds] = useState([]);
@@ -48,8 +44,6 @@ function App(props) {
   const { artists } = useArtists({ handleSetArtistIds });
   const { user } = useGithubUser();
   const { readme } = useReadme({ user, handleChangeIntro });
-
-  const [updateReadme] = useMutation(putReadme);
 
   const getSelectHandler = (setState) => (id) =>
     setState(ifElse(includes(id), reject(equals(id)), append(id)));
@@ -82,20 +76,15 @@ function App(props) {
     [intro, selectedArtists, selectedTracks]
   )();
 
-  const handleSubmit = async () => {
-    if (showPreview) {
-      await updateReadme({
-        token: githubToken,
-        readme: readmeContent,
-        sha: readme.sha,
-        user,
-      });
-    }
-  };
+  const getCommitInfo = () => ({
+    readme: readmeContent,
+    sha: readme?.sha,
+    user,
+  });
 
   return (
     <div className={className}>
-      <TopBar handleSubmit={handleSubmit} submitDisabled={!showPreview} />
+      <TopBar getCommitInfo={getCommitInfo} submitDisabled={!showPreview} />
       <Container className="container">
         <Typography variant="h4">Top Tracks & Artists</Typography>
         <Grid container justify="center" spacing={3}>

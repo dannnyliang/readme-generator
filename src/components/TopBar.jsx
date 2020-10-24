@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Button,
   Slide,
   Toolbar,
   Typography,
@@ -11,6 +10,7 @@ import AuthGithub from "./AuthGithub";
 import AuthSpotify from "./AuthSpotify";
 import PropTypes from "prop-types";
 import React from "react";
+import SubmitModal from "./SubmitModal";
 import styled from "styled-components";
 
 function HideOnScroll(props) {
@@ -25,7 +25,7 @@ function HideOnScroll(props) {
 }
 
 function TopBar(props) {
-  const { className, submitDisabled, handleSubmit } = props;
+  const { className, submitDisabled, getCommitInfo } = props;
   return (
     <div className={className}>
       <HideOnScroll>
@@ -36,14 +36,10 @@ function TopBar(props) {
             </Typography>
             <AuthSpotify />
             <AuthGithub />
-            <Button
-              variant="outlined"
-              color="secondary"
-              disabled={submitDisabled}
-              onClick={handleSubmit}
-            >
-              submit
-            </Button>
+            <SubmitModal
+              submitDisabled={submitDisabled}
+              getCommitInfo={getCommitInfo}
+            />
           </Toolbar>
         </AppBar>
       </HideOnScroll>
@@ -55,7 +51,7 @@ function TopBar(props) {
 TopBar.propTypes = {
   className: PropTypes.string,
   submitDisabled: PropTypes.bool,
-  handleSubmit: PropTypes.func,
+  getCommitInfo: PropTypes.func,
 };
 
 const StyledTopBar = styled(TopBar)`
