@@ -42,7 +42,9 @@ export default function ({
     : [artists[3], artists[1], artists[0], artists[2], artists[4]];
 
   return `
-<img width="100%" src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/stair.jpeg">
+<p>
+  <img width="100%" src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/stair.jpeg">
+</p>
 <p align='center'>
   <a href="https://www.facebook.com/dannnyliang">
     <img height="30" src="https://raw.githubusercontent.com/dannnyliang/dannnyliang/master/assets/images/facebook.png">
