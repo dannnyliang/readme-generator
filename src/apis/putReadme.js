@@ -3,7 +3,7 @@ export default async function ({ message, token, readme, sha, user }) {
 
   try {
     const response = await fetch(
-      "https://api.github.com/repos/dannnyliang/dannnyliang/contents/README.md",
+      `https://api.github.com/repos/${user.login}/${user.login}/contents/README.md`,
       {
         method: "PUT",
         headers: {
