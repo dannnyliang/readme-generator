@@ -1,4 +1,4 @@
-import { Box, Paper } from "@material-ui/core";
+import { Box, Grid, Paper } from "@material-ui/core";
 import React, { memo } from "react";
 
 import PropTypes from "prop-types";
@@ -11,10 +11,19 @@ function Preview(props) {
 
   return (
     <div className={className}>
-      <Box className="profile-section">Github Profile</Box>
-      <Paper className="readme-section" variant="outlined">
-        <div dangerouslySetInnerHTML={{ __html: marked(readmeContent) }} />
-      </Paper>
+      <Grid className="grid-wrapper" container spacing={4}>
+        <Grid item xs={3}>
+          <Box className="profile-section">Github Profile</Box>
+        </Grid>
+        <Grid item xs={9}>
+          <Paper className="readme-section" variant="outlined">
+            <div
+              className="markdown-body"
+              dangerouslySetInnerHTML={{ __html: marked(readmeContent) }}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 }
@@ -24,15 +33,15 @@ Preview.propTypes = {
 };
 
 const StyledPreview = styled(Preview)`
-  display: flex;
-  background-color: #fff;
+  .grid-wrapper {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
   .profile-section {
-    flex: 1;
   }
 
   .readme-section {
-    width: 854px;
     padding: 24px;
   }
 `;

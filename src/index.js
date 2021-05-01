@@ -9,6 +9,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";
 
+import "./styles/gfm.css";
+
 const queryCache = new QueryCache({
   defaultConfig: {
     queries: {
