@@ -1,6 +1,5 @@
 import {
   Container,
-  Divider,
   Grid,
   TextareaAutosize,
   Typography,
@@ -28,6 +27,7 @@ import useArtists from "./hooks/useArtists";
 import useGithubUser from "./hooks/useGithubUser";
 import useReadme from "./hooks/useReadme";
 import useTracks from "./hooks/useTracks";
+import Section from "./components/Section";
 
 function App(props) {
   const { className } = props;
@@ -86,56 +86,62 @@ function App(props) {
     <div className={className}>
       <TopBar getCommitInfo={getCommitInfo} submitDisabled={!showPreview} />
       <Container className="container">
-        <Typography variant="h4">Top Tracks & Artists</Typography>
-        <Grid container justify="center" spacing={3}>
-          <Grid item xs={6}>
-            <TrackTable
-              tracks={tracks}
-              selectedIds={selectedTrackIds}
-              handleSelect={getSelectHandler(setSelectedTrackIds)}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ArtistTable
-              artists={artists}
-              selectedIds={selectedArtistIds}
-              handleSelect={getSelectHandler(setSelectedArtistIds)}
-            />
-          </Grid>
-        </Grid>
-        <Divider className="divider" />
-        <Typography variant="h4">Personal Introduction</Typography>
-        {needAuthGithub ? (
-          <Typography className="warning" color="error">
-            Please auth github account first!
-          </Typography>
-        ) : (
-          <>
-            <Typography variant="body1">
-              (Current user: <u>{user.login}</u>)
-            </Typography>
-            <div className="textarea-wrapper">
-              <TextareaAutosize
-                value={intro}
-                rowsMin={4}
-                onChange={(e) => handleChangeIntro(e.target.value)}
+        {/* Top Tracks & Artists */}
+        <Section title="Top Tracks & Artists">
+          <Grid container justify="center" spacing={3}>
+            <Grid item xs={6}>
+              <TrackTable
+                tracks={tracks}
+                selectedIds={selectedTrackIds}
+                handleSelect={getSelectHandler(setSelectedTrackIds)}
               />
-            </div>
-          </>
-        )}
-        <Divider className="divider" />
-        <Typography variant="h4">Preview</Typography>
-        {(needAuthSpotify || needAuthGithub) && (
-          <Typography className="warning" color="error">
-            Please auth github or spotify account first!
-          </Typography>
-        )}
-        {invalidSelection && (
-          <Typography className="warning" color="error">
-            Please select 5 tracks and 5 artists!
-          </Typography>
-        )}
-        {showPreview && <Preview readmeContent={readmeContent} />}
+            </Grid>
+            <Grid item xs={6}>
+              <ArtistTable
+                artists={artists}
+                selectedIds={selectedArtistIds}
+                handleSelect={getSelectHandler(setSelectedArtistIds)}
+              />
+            </Grid>
+          </Grid>
+        </Section>
+
+        {/* Personal Introduction */}
+        <Section title="Personal Introduction">
+          {needAuthGithub ? (
+            <Typography className="warning" color="error">
+              Please auth github account first!
+            </Typography>
+          ) : (
+            <>
+              <Typography variant="body1">
+                (Current user: <u>{user.login}</u>)
+              </Typography>
+              <div className="textarea-wrapper">
+                <TextareaAutosize
+                  value={intro}
+                  rowsMin={4}
+                  onChange={(e) => handleChangeIntro(e.target.value)}
+                />
+              </div>
+            </>
+          )}
+        </Section>
+
+        {/* Preview */}
+        <Section title="Preview" showDivider={false}>
+          {(needAuthSpotify || needAuthGithub) && (
+            <Typography className="warning" color="error">
+              Please auth github or spotify account first!
+            </Typography>
+          )}
+          {invalidSelection && (
+            <Typography className="warning" color="error">
+              Please select 5 tracks and 5 artists!
+            </Typography>
+          )}
+          {showPreview && <Preview readmeContent={readmeContent} />}
+        </Section>
       </Container>
     </div>
   );
@@ -148,10 +154,6 @@ const StyledApp = styled(App)`
     margin-bottom: 32px;
   }
 
-  .divider {
-    margin: 32px 0;
-  }
-
   .textarea-wrapper {
     display: flex;
     margin: 16px 0;
@@ -159,12 +161,6 @@ const StyledApp = styled(App)`
       flex: 1;
       padding: 16px;
     }
-  }
-
-  .actions-button {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
   }
 `;
 
