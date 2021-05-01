@@ -7,16 +7,14 @@ import {
   TextField,
 } from "@material-ui/core";
 import React, { useState } from "react";
+import { format } from "date-fns";
 
 import PropTypes from "prop-types";
 import { getLocalStorageToken } from "../utils";
 import putReadme from "../apis/putReadme";
 import { useMutation } from "react-query";
 
-const date = new Date();
-const defaultMessage = `update on ${date.getFullYear()}-${(
-  "0" + date.getMonth()
-).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
+const defaultMessage = `update on ${format(new Date(), "yyyy-MM-dd")}`;
 
 function SubmitModal(props) {
   const { submitDisabled, getCommitInfo } = props;
