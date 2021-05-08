@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Button,
   Slide,
   Toolbar,
   Typography,
@@ -26,6 +27,11 @@ function HideOnScroll(props) {
 
 function TopBar(props) {
   const { className, submitDisabled, getCommitInfo } = props;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(getCommitInfo().readme);
+  };
+
   return (
     <div className={className}>
       <HideOnScroll>
@@ -36,6 +42,9 @@ function TopBar(props) {
             </Typography>
             <AuthSpotify />
             <AuthGithub />
+            <Button variant="outlined" onClick={handleCopy}>
+              Copy
+            </Button>
             <SubmitModal
               submitDisabled={submitDisabled}
               getCommitInfo={getCommitInfo}

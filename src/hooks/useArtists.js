@@ -1,25 +1,16 @@
-import { getDefaultSelection, getLocalStorageToken } from "../utils";
-
 import { artistDataTransformer } from "../components/ArtistTable";
 import getArtists from "../apis/getArtists";
+import { getLocalStorageToken } from "../utils";
 import { useQuery } from "react-query";
 
-export default (params) => {
-  const { handleSetArtistIds } = params;
+export default () => {
   const { spotifyToken } = getLocalStorageToken();
 
   const response = useQuery(
-    ["getArtists", { token: spotifyToken, params: { limit: 10 } }],
+    ["getArtists", { token: spotifyToken, params: { limit: 5 } }],
     getArtists,
     {
       retry: false,
-      onSuccess: (data) => {
-        if (data) {
-          handleSetArtistIds(
-            getDefaultSelection(artistDataTransformer(data.items))
-          );
-        }
-      },
       onError: (error) => {
         console.error(error);
       },

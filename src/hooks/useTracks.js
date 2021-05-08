@@ -1,25 +1,16 @@
-import { getDefaultSelection, getLocalStorageToken } from "../utils";
-
+import { getLocalStorageToken } from "../utils";
 import getTracks from "../apis/getTracks";
 import { trackDataTransformer } from "../components/TrackTable";
 import { useQuery } from "react-query";
 
-export default (params) => {
-  const { handleSetTrackIds } = params;
+export default () => {
   const { spotifyToken } = getLocalStorageToken();
 
   const response = useQuery(
-    ["getTracks", { token: spotifyToken, params: { limit: 10 } }],
+    ["getTracks", { token: spotifyToken, params: { limit: 5 } }],
     getTracks,
     {
       retry: false,
-      onSuccess: (data) => {
-        if (data) {
-          handleSetTrackIds(
-            getDefaultSelection(trackDataTransformer(data.items))
-          );
-        }
-      },
       onError: (error) => {
         console.error(error);
       },

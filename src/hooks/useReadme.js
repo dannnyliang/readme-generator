@@ -10,12 +10,16 @@ export default (params) => {
     enabled: !isNil(user?.login),
     onSuccess: (data) => {
       if (data) {
-        const introSection = split(
-          "<!--  Intro Section -->",
-          decodeURIComponent(escape(atob(data.content)))
-        )[1];
+        const readmeContent = decodeURIComponent(escape(atob(data.content)));
 
-        handleChangeIntro(introSection);
+        if (readmeContent.includes("<!--  Intro Section -->")) {
+          const introSection = split(
+            "<!--  Intro Section -->",
+            decodeURIComponent(escape(atob(data.content)))
+          )[1];
+
+          handleChangeIntro(introSection);
+        }
       }
     },
     onError: (error) => {
