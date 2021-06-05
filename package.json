@@ -7,7 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "commit": "cz"
+    "commit": "cz",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -74,10 +75,5 @@
       "eslint --fix --quiet",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
