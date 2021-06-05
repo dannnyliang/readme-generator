@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-import token from "./token";
+import { githubApi } from "../../apis/github";
+import github from "./github";
 
 const rootReducer = combineReducers({
-  token,
+  github,
+  [githubApi.reducerPath]: githubApi.reducer,
 });
 
 export default rootReducer;

@@ -1,7 +1,7 @@
 import { Button, Flex, FlexProps, HStack, Heading } from "@chakra-ui/react";
 
-import Github from "../icons/Github";
 import Spotify from "../icons/Spotify";
+import AuthGithub from "./AuthGithub";
 
 type NavBarProps = {} & FlexProps;
 
@@ -21,7 +21,7 @@ function NavBar(props: NavBarProps) {
       <Heading size="lg">Readme Generator</Heading>
       <HStack spacing={4}>
         <Spotify boxSize={8} />
-        <Github boxSize={8} />
+        <AuthGithub />
         <Button variant="outline">Copy</Button>
         <Button variant="outline" colorScheme="red">
           Copy
