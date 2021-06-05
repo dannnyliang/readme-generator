@@ -15,34 +15,45 @@ import { any, isNil } from "ramda";
 import { useEffect } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
 
-import { useAccessTokenMutation } from "../apis/github";
+import { useAccessTokenMutation } from "../apis/spotify";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import Github from "../icons/Github";
+import Spotify from "../icons/Spotify";
 import {
   clearAccessToken,
   selectAccessToken,
   setAccessToken,
-} from "../redux/reducers/github";
+} from "../redux/reducers/spotify";
 
-function getGithubAuthorizeLink() {
-  const { REACT_APP_GITHUB_CLIENT_ID, REACT_APP_GITHUB_REDIRECT_URI } =
-    process.env;
+function getSpotifyAuthorizeLink() {
+  const {
+    REACT_APP_SPOTIFY_CLIENT_ID,
+    REACT_APP_SPOTIFY_SECRET_ID,
+    REACT_APP_SPOTIFY_REDIRECT_URI,
+  } = process.env;
 
-  if (any(isNil, [REACT_APP_GITHUB_CLIENT_ID, REACT_APP_GITHUB_REDIRECT_URI])) {
+  if (
+    any(isNil, [
+      REACT_APP_SPOTIFY_CLIENT_ID,
+      REACT_APP_SPOTIFY_SECRET_ID,
+      REACT_APP_SPOTIFY_REDIRECT_URI,
+    ])
+  ) {
     return;
   }
-  const client_id = REACT_APP_GITHUB_CLIENT_ID;
-  const redirect_uri = encodeURIComponent(REACT_APP_GITHUB_REDIRECT_URI!);
-  const scope = "read:packages%20write:packages%20repo%20user";
 
-  return `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}`;
+  const client_id = REACT_APP_SPOTIFY_CLIENT_ID;
+  const response_type = "code";
+  const redirect_uri = encodeURIComponent(REACT_APP_SPOTIFY_REDIRECT_URI!);
+  const scope = "user-read-recently-played%20user-top-read";
+
+  return `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&scope=${scope}`;
 }
 
-function AuthGithub() {
-  const githubAuthorizeLink = getGithubAuthorizeLink();
+function AuthSpotify() {
+  const spotifyAuthorizeLink = getSpotifyAuthorizeLink();
   const accessToken = useAppSelector(selectAccessToken);
-  const authable = githubAuthorizeLink && !accessToken;
+  const authable = spotifyAuthorizeLink && !accessToken;
 
   const toast = useToast();
   const dispatch = useAppDispatch();
@@ -52,23 +63,23 @@ function AuthGithub() {
   useEffect(() => {
     if (accessToken) return;
 
-    const localStorageTokenGithub = window.localStorage.getItem(
-      LOCALSTORAGE_TOKEN.GITHUB
+    const localStorageTokenSpotify = window.localStorage.getItem(
+      LOCALSTORAGE_TOKEN.SPOTIFY
     );
-    if (localStorageTokenGithub) {
-      dispatch(setAccessToken(JSON.parse(localStorageTokenGithub)));
+    if (localStorageTokenSpotify) {
+      dispatch(setAccessToken(JSON.parse(localStorageTokenSpotify)));
     }
   }, [dispatch, accessToken]);
 
   useEffect(() => {
     if (accessToken) return;
 
-    if (code && window.location.pathname.includes("github")) {
+    if (code && window.location.pathname.includes("spotify")) {
       getAccessToken({ code }).then((res) => {
-        if ("error" in res || "error" in res.data) {
+        if ("error" in res) {
           console.error(res);
           toast({
-            title: "登入 Github 失敗",
+            title: "登入 Spotify 失敗",
             status: "error",
             isClosable: true,
           });
@@ -89,7 +100,7 @@ function AuthGithub() {
       <Popover trigger="hover" placement="bottom" matchWidth>
         <PopoverTrigger>
           <Box boxSize={8}>
-            <Github boxSize={8} />
+            <Spotify boxSize={8} />
           </Box>
         </PopoverTrigger>
         <PopoverContent width="unset">
@@ -112,10 +123,10 @@ function AuthGithub() {
 
   return (
     <LinkBox alignItems="center">
-      <LinkOverlay href={githubAuthorizeLink} />
-      {isLoading ? <Spinner size="lg" /> : <Github boxSize={8} />}
+      <LinkOverlay href={spotifyAuthorizeLink} />
+      {isLoading ? <Spinner size="lg" /> : <Spotify boxSize={8} />}
     </LinkBox>
   );
 }
 
-export default AuthGithub;
+export default AuthSpotify;
