@@ -26,6 +26,7 @@ const {
 } = process.env;
 
 export const spotifyApi = createApi({
+  reducerPath: "apiSpotify",
   baseQuery: fetchBaseQuery({
     baseUrl:
       "https://cors-anywhere.herokuapp.com/https://accounts.spotify.com/api",

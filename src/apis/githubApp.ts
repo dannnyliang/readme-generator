@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-type AuthSuccess = {
+export type AuthSuccess = {
   access_token: string;
   scope: string;
   token_type: string;
@@ -20,7 +20,8 @@ type AuthArgs = {
 
 const { REACT_APP_GITHUB_CLIENT_ID, REACT_APP_GITHUB_SECRET_ID } = process.env;
 
-export const githubApi = createApi({
+export const githubAppApi = createApi({
+  reducerPath: "apiGithubApp",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://cors-anywhere.herokuapp.com/https://github.com",
     prepareHeaders: (headers) => {
@@ -45,4 +46,4 @@ export const githubApi = createApi({
   }),
 });
 
-export const { useAccessTokenMutation } = githubApi;
+export const { useAccessTokenMutation } = githubAppApi;

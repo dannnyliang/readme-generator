@@ -15,7 +15,7 @@ import { any, isNil } from "ramda";
 import { useEffect } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
 
-import { useAccessTokenMutation } from "../apis/github";
+import { useAccessTokenMutation } from "../apis/githubApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Github from "../icons/Github";
