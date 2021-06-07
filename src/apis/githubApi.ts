@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { selectAccessToken } from "../redux/reducers/github";
 import { RootState } from "..";
 
-export type GithubUser = any;
+export type GithubUser = Record<string, any>;
+export type GithubRepo = Record<string, any>;
 
 export const githubApi = createApi({
   reducerPath: "apiGithub",
@@ -22,7 +23,10 @@ export const githubApi = createApi({
     getUser: builder.query<GithubUser, void>({
       query: () => "user",
     }),
+    getReadme: builder.query<GithubRepo, string>({
+      query: (username) => `repos/${username}/${username}/contents/README.md`,
+    }),
   }),
 });
 
-export const { useGetUserQuery, useLazyGetUserQuery } = githubApi;
+export const { useGetUserQuery, useGetReadmeQuery } = githubApi;

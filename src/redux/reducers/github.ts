@@ -8,6 +8,10 @@ import { RootState } from "../..";
 type GithubState = {
   accessToken?: AuthSuccess;
   user?: GithubUser;
+  readme?: {
+    content: string;
+    sha: string;
+  };
 };
 
 const name = "github";
@@ -37,15 +41,27 @@ const githubSlice = createSlice({
       },
       prepare: (user: GithubUser) => ({ payload: user }),
     },
+    setReadme: {
+      reducer: (
+        state,
+        action: PayloadAction<NonNullable<GithubState["readme"]>>
+      ) => {
+        state.readme = action.payload;
+      },
+      prepare: (readme: NonNullable<GithubState["readme"]>) => ({
+        payload: readme,
+      }),
+    },
   },
 });
 
 /** ----- Selectors ----- */
 export const selectAccessToken = (state: RootState) => state.github.accessToken;
 export const selectUser = (state: RootState) => state.github.user;
+export const selectReadme = (state: RootState) => state.github.readme;
 
 /** ----- Actions ----- */
-export const { setAccessToken, clearAccessToken, setUser } =
+export const { setAccessToken, clearAccessToken, setUser, setReadme } =
   githubSlice.actions;
 
 /** ----- Reducer ----- */

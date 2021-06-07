@@ -1,24 +1,41 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  HStack,
-  Heading,
-  Link,
-  Textarea,
-  TextareaProps,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, HStack, Heading, Link, TextareaProps } from "@chakra-ui/react";
+import { isNil, split, tail } from "ramda";
 
-import { useAppSelector } from "../hooks";
-import { selectUser } from "../redux/reducers/github";
+import { useGetReadmeQuery } from "../apis/githubApi";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { selectReadme, selectUser, setReadme } from "../redux/reducers/github";
+import AutoResizeTextarea from "./AutoResizeTextarea";
+
+const splitReadmeContent = (rawContent: string) => {
+  const content = decodeURIComponent(escape(atob(rawContent)));
+  if (content.includes("<!--  Intro Section -->")) {
+    return tail(split("<!--  Intro Section -->", content));
+  }
+  return [content];
+};
 
 function SectionIntro() {
-  const [intro, setIntro] = useState("");
-
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const readme = useAppSelector(selectReadme);
+  const { data } = useGetReadmeQuery(user?.login, {
+    skip: isNil(user),
+  });
 
-  const handleChange: TextareaProps["onChange"] = (e) =>
-    setIntro(e.target.value);
+  const splitedContent = splitReadmeContent(readme?.content ?? "");
+  const intro = splitedContent[0];
+
+  if (!readme && data) {
+    dispatch(
+      setReadme({
+        sha: data.sha,
+        content: data.content,
+      })
+    );
+  }
+
+  const handleChange: TextareaProps["onChange"] = (e) => {};
 
   return (
     <Box p={4}>
@@ -32,7 +49,7 @@ function SectionIntro() {
           </Link>
         )}
       </HStack>
-      <Textarea value={intro} onChange={handleChange} />
+      <AutoResizeTextarea value={intro} onChange={handleChange} />
     </Box>
   );
 }
