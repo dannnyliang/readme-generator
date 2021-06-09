@@ -16,9 +16,10 @@ function NavBar(props: NavBarProps) {
       mb={8}
       p={4}
       boxShadow="base"
+      bgColor="white"
       {...restProps}
     >
-      <Heading size="lg">Readme Generator</Heading>
+      <Heading size="md">Readme Generator</Heading>
       <HStack spacing={4}>
         <AuthSpotify />
         <AuthGithub />

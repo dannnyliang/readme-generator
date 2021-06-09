@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import { isNil } from "ramda";
 import { useEffect } from "react";
 
@@ -46,13 +46,13 @@ function App() {
   }, [dataReadme, dispatch, readme]);
 
   return (
-    <div>
+    <Box bgColor="gray.50">
       <NavBar />
       <Container maxW="container.xl">
         <SectionIntro />
         <SectionPreview />
       </Container>
-    </div>
+    </Box>
   );
 }
 

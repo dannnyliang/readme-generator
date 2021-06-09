@@ -1,3 +1,5 @@
+import "./styles/gfm.css";
+
 import { ChakraProvider } from "@chakra-ui/react";
 import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
@@ -7,6 +9,7 @@ import { QueryParamProvider } from "use-query-params";
 
 import App from "./App";
 import reducer from "./redux/reducers";
+import { overrides } from "./styles/customGlobalStyle";
 
 const store = configureStore({
   reducer,
@@ -17,7 +20,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <QueryParamProvider>
-        <ChakraProvider>
+        <ChakraProvider resetCSS={false} theme={overrides}>
           <App />
         </ChakraProvider>
       </QueryParamProvider>
