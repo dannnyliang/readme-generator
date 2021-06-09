@@ -1,13 +1,17 @@
 import { Container } from "@chakra-ui/react";
 import { isNil } from "ramda";
+import { useEffect } from "react";
 
-import { useGetUserQuery } from "./apis/githubApi";
+import { useGetReadmeQuery, useGetUserQuery } from "./apis/githubApi";
 import NavBar from "./components/NavBar";
 import SectionIntro from "./components/SectionIntro";
+import SectionPreview from "./components/SectionPreview";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import {
   selectAccessToken,
+  selectReadme,
   selectUser,
+  setReadme,
   setUser,
 } from "./redux/reducers/github";
 
@@ -15,19 +19,38 @@ function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAccessToken);
   const user = useAppSelector(selectUser);
-  const { data } = useGetUserQuery(undefined, {
+  const readme = useAppSelector(selectReadme);
+
+  const { data: dataUser } = useGetUserQuery(undefined, {
     skip: isNil(accessToken),
   });
+  const { data: dataReadme } = useGetReadmeQuery(user?.login, {
+    skip: isNil(user),
+  });
 
-  if (!user && data) {
-    dispatch(setUser(data));
-  }
+  useEffect(() => {
+    if (!user && dataUser) {
+      dispatch(setUser(dataUser));
+    }
+  }, [dataUser, dispatch, user]);
+
+  useEffect(() => {
+    if (!readme && dataReadme) {
+      dispatch(
+        setReadme({
+          sha: dataReadme.sha,
+          content: dataReadme.content,
+        })
+      );
+    }
+  }, [dataReadme, dispatch, readme]);
 
   return (
     <div>
       <NavBar />
       <Container maxW="container.xl">
         <SectionIntro />
+        <SectionPreview />
       </Container>
     </div>
   );
