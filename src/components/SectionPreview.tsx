@@ -2,11 +2,11 @@ import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import marked from "marked";
 
 import { useAppSelector } from "../hooks";
-import { selectIntroduction, selectUser } from "../redux/reducers/github";
+import selectors from "../redux/selectors";
 
 function SectionPreview() {
-  const introduction = useAppSelector(selectIntroduction);
-  const user = useAppSelector(selectUser);
+  const introduction = useAppSelector(selectors.github.selectIntroduction);
+  const user = useAppSelector(selectors.github.selectUser);
 
   return (
     <Box p={4}>

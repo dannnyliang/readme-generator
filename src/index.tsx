@@ -1,20 +1,14 @@
 import "./styles/gfm.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { QueryParamProvider } from "use-query-params";
 
 import App from "./App";
-import reducer from "./redux/reducers";
+import { store } from "./redux";
 import { overrides } from "./styles/customGlobalStyle";
-
-const store = configureStore({
-  reducer,
-  devTools: process.env.NODE_ENV !== "production",
-});
 
 ReactDOM.render(
   <React.StrictMode>

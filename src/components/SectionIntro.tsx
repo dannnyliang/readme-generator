@@ -2,17 +2,14 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Box, HStack, Heading, Link, TextareaProps } from "@chakra-ui/react";
 
 import { useAppDispatch, useAppSelector } from "../hooks";
-import {
-  selectIntroduction,
-  selectUser,
-  setIntroduction,
-} from "../redux/reducers/github";
+import { setIntroduction } from "../redux/reducers/github";
+import selectors from "../redux/selectors";
 import AutoResizeTextarea from "./AutoResizeTextarea";
 
 function SectionIntro() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
-  const introduction = useAppSelector(selectIntroduction);
+  const user = useAppSelector(selectors.github.selectUser);
+  const introduction = useAppSelector(selectors.github.selectIntroduction);
 
   const handleChange: TextareaProps["onChange"] = (e) => {
     dispatch(setIntroduction(e.target.value));

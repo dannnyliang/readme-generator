@@ -19,11 +19,8 @@ import { useAccessTokenMutation } from "../apis/githubApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Github from "../icons/Github";
-import {
-  clearAccessToken,
-  selectAccessToken,
-  setAccessToken,
-} from "../redux/reducers/github";
+import { clearAccessToken, setAccessToken } from "../redux/reducers/github";
+import selectors from "../redux/selectors";
 
 function getGithubAuthorizeLink() {
   const { REACT_APP_GITHUB_CLIENT_ID, REACT_APP_GITHUB_REDIRECT_URI } =
@@ -41,7 +38,7 @@ function getGithubAuthorizeLink() {
 
 function AuthGithub() {
   const githubAuthorizeLink = getGithubAuthorizeLink();
-  const accessToken = useAppSelector(selectAccessToken);
+  const accessToken = useAppSelector(selectors.github.selectAccessToken);
   const authable = githubAuthorizeLink && !accessToken;
 
   const toast = useToast();

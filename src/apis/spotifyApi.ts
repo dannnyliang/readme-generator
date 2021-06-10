@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { TIME_RANGE } from "../constants";
-import { selectAccessToken } from "../redux/reducers/spotify";
+import selectors from "../redux/selectors";
 import { RootState } from "..";
 
 type TopTracksArgs = {
@@ -20,7 +20,9 @@ export const spotifyApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.spotify.com",
     prepareHeaders: (headers, { getState }) => {
-      const accessToken = selectAccessToken(getState() as RootState);
+      const accessToken = selectors.spotify.selectAccessToken(
+        getState() as RootState
+      );
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken.access_token}`);
       }

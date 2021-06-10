@@ -19,11 +19,8 @@ import { useAccessTokenMutation } from "../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Spotify from "../icons/Spotify";
-import {
-  clearAccessToken,
-  selectAccessToken,
-  setAccessToken,
-} from "../redux/reducers/spotify";
+import { clearAccessToken, setAccessToken } from "../redux/reducers/spotify";
+import selectors from "../redux/selectors";
 
 function getSpotifyAuthorizeLink() {
   const {
@@ -52,7 +49,7 @@ function getSpotifyAuthorizeLink() {
 
 function AuthSpotify() {
   const spotifyAuthorizeLink = getSpotifyAuthorizeLink();
-  const accessToken = useAppSelector(selectAccessToken);
+  const accessToken = useAppSelector(selectors.spotify.selectAccessToken);
   const authable = spotifyAuthorizeLink && !accessToken;
 
   const toast = useToast();

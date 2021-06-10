@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { selectAccessToken } from "../redux/reducers/github";
+import selectors from "../redux/selectors";
 import { RootState } from "..";
 
 export type GithubUser = Record<string, any>;
@@ -11,7 +11,9 @@ export const githubApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.github.com",
     prepareHeaders: (headers, { getState }) => {
-      const accessToken = selectAccessToken(getState() as RootState);
+      const accessToken = selectors.github.selectAccessToken(
+        getState() as RootState
+      );
       if (accessToken) {
         headers.set("Authorization", `token ${accessToken.access_token}`);
         headers.set("Accept", "application/vnd.github.v3+json");

@@ -1,22 +1,20 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { AuthResponse } from "../../apis/spotifyApp";
+import { AuthSuccess } from "../../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
-import { RootState } from "../..";
 
 type SpotifyState = {
-  accessToken?: AuthResponse;
-  data?: any;
+  accessToken?: AuthSuccess;
 };
 
-const name = "spotify";
+export const name = "spotify";
 const initialState: SpotifyState = {};
 
 const spotifySlice = createSlice({
   name,
   initialState,
   reducers: {
-    setAccessToken: (state, action: PayloadAction<AuthResponse>) => {
+    setAccessToken: (state, action: PayloadAction<AuthSuccess>) => {
       window.localStorage.setItem(
         LOCALSTORAGE_TOKEN.SPOTIFY,
         JSON.stringify(action.payload)
@@ -29,10 +27,6 @@ const spotifySlice = createSlice({
     },
   },
 });
-
-/** ----- Selectors ----- */
-export const selectAccessToken = (state: RootState) =>
-  state.spotify.accessToken;
 
 /** ----- Actions ----- */
 export const { setAccessToken, clearAccessToken } = spotifySlice.actions;

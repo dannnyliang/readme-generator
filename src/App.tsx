@@ -7,19 +7,14 @@ import NavBar from "./components/NavBar";
 import SectionIntro from "./components/SectionIntro";
 import SectionPreview from "./components/SectionPreview";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import {
-  selectAccessToken,
-  selectReadme,
-  selectUser,
-  setReadme,
-  setUser,
-} from "./redux/reducers/github";
+import { setReadme, setUser } from "./redux/reducers/github";
+import selectors from "./redux/selectors";
 
 function App() {
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector(selectAccessToken);
-  const user = useAppSelector(selectUser);
-  const readme = useAppSelector(selectReadme);
+  const accessToken = useAppSelector(selectors.github.selectAccessToken);
+  const user = useAppSelector(selectors.github.selectUser);
+  const readme = useAppSelector(selectors.github.selectReadme);
 
   const { data: dataUser } = useGetUserQuery(undefined, {
     skip: isNil(accessToken),

@@ -4,7 +4,6 @@ import { GithubUser } from "../../apis/githubApi";
 import { AuthSuccess } from "../../apis/githubApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
 import { splitReadmeContent } from "../../utils";
-import { RootState } from "../..";
 
 type GithubState = {
   accessToken?: AuthSuccess;
@@ -16,7 +15,7 @@ type GithubState = {
   introduction: string;
 };
 
-const name = "github";
+export const name = "github";
 const initialState: GithubState = {
   introduction: "",
 };
@@ -51,13 +50,6 @@ const githubSlice = createSlice({
     },
   },
 });
-
-/** ----- Selectors ----- */
-export const selectAccessToken = (state: RootState) => state.github.accessToken;
-export const selectUser = (state: RootState) => state.github.user;
-export const selectReadme = (state: RootState) => state.github.readme;
-export const selectIntroduction = (state: RootState) =>
-  state.github.introduction;
 
 /** ----- Actions ----- */
 export const {
