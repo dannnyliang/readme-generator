@@ -18,12 +18,19 @@ type AuthArgs = {
   code: string;
 };
 
-const { REACT_APP_GITHUB_CLIENT_ID, REACT_APP_GITHUB_SECRET_ID } = process.env;
+const {
+  REACT_APP_GITHUB_CLIENT_ID,
+  REACT_APP_GITHUB_SECRET_ID,
+  REACT_APP_DEVELOPMENT_PROXY,
+  NODE_ENV,
+} = process.env;
 
 export const githubAppApi = createApi({
   reducerPath: "apiGithubApp",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://cors-anywhere.herokuapp.com/https://github.com",
+    baseUrl: `${
+      NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_PROXY : ""
+    }https://github.com`,
     prepareHeaders: (headers) => {
       headers.set("accept", "application/json");
       return headers;

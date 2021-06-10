@@ -15,7 +15,7 @@ import { any, isNil } from "ramda";
 import { useEffect } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
 
-import { useAccessTokenMutation } from "../apis/spotify";
+import { useAccessTokenMutation } from "../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Spotify from "../icons/Spotify";

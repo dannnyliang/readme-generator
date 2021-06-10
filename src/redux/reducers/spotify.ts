@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { AuthResponse } from "../../apis/spotify";
+import { AuthResponse } from "../../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
 import { RootState } from "../..";
 
@@ -16,17 +16,12 @@ const spotifySlice = createSlice({
   name,
   initialState,
   reducers: {
-    setAccessToken: {
-      reducer: (state, action: PayloadAction<AuthResponse>) => {
-        window.localStorage.setItem(
-          LOCALSTORAGE_TOKEN.SPOTIFY,
-          JSON.stringify(action.payload)
-        );
-        state.accessToken = action.payload;
-      },
-      prepare: (accessToken: AuthResponse) => {
-        return { payload: accessToken };
-      },
+    setAccessToken: (state, action: PayloadAction<AuthResponse>) => {
+      window.localStorage.setItem(
+        LOCALSTORAGE_TOKEN.SPOTIFY,
+        JSON.stringify(action.payload)
+      );
+      state.accessToken = action.payload;
     },
     clearAccessToken: (state) => {
       window.localStorage.removeItem(LOCALSTORAGE_TOKEN.SPOTIFY);

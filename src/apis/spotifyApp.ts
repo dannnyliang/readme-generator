@@ -23,13 +23,16 @@ const {
   REACT_APP_SPOTIFY_CLIENT_ID,
   REACT_APP_SPOTIFY_SECRET_ID,
   REACT_APP_SPOTIFY_REDIRECT_URI,
+  REACT_APP_DEVELOPMENT_PROXY,
+  NODE_ENV,
 } = process.env;
 
-export const spotifyApi = createApi({
-  reducerPath: "apiSpotify",
+export const spotifyAppApi = createApi({
+  reducerPath: "apiSpotifyApp",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      "https://cors-anywhere.herokuapp.com/https://accounts.spotify.com/api",
+    baseUrl: `${
+      NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_PROXY : ""
+    }https://accounts.spotify.com/api`,
     prepareHeaders: (headers) => {
       const authorizationCode = btoa(
         `${REACT_APP_SPOTIFY_CLIENT_ID}:${REACT_APP_SPOTIFY_SECRET_ID}`
@@ -57,4 +60,4 @@ export const spotifyApi = createApi({
   }),
 });
 
-export const { useAccessTokenMutation } = spotifyApi;
+export const { useAccessTokenMutation } = spotifyAppApi;
