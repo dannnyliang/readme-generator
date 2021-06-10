@@ -12,8 +12,24 @@ type TopArtistsArgs = {
   limit?: number;
   timeRange?: TIME_RANGE;
 };
-export type TopTracksResponse = Record<string, any>;
-export type TopArtistsResponse = Record<string, any>;
+export type TopTracksResponse = {
+  href: string;
+  items: Record<string, any>[];
+  limit: number;
+  offset: number;
+  total: number;
+  next: string;
+  previous: string;
+};
+export type TopArtistsResponse = {
+  href: string;
+  items: Record<string, any>[];
+  limit: number;
+  offset: number;
+  total: number;
+  next: string;
+  previous: string;
+};
 
 export const spotifyApi = createApi({
   reducerPath: "apiSpotify",
