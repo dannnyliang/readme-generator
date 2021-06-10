@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-type AuthSuccess = {
+export type AuthSuccess = {
   access_token: string;
   expires_in: number;
   refresh_token: string;

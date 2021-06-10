@@ -76,7 +76,7 @@ function AuthSpotify() {
 
     if (code && window.location.pathname.includes("spotify")) {
       getAccessToken({ code }).then((res) => {
-        if ("error" in res) {
+        if ("error" in res || "error" in res.data) {
           console.error(res);
           toast({
             title: "登入 Spotify 失敗",
