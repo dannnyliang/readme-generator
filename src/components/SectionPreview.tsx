@@ -7,6 +7,8 @@ import selectors from "../redux/selectors";
 function SectionPreview() {
   const introduction = useAppSelector(selectors.github.selectIntroduction);
   const user = useAppSelector(selectors.github.selectUser);
+  const trackContent = useAppSelector(selectors.spotify.selectTrackContent);
+  const artistContent = useAppSelector(selectors.spotify.selectArtistContent);
 
   return (
     <Box p={4}>
@@ -29,6 +31,14 @@ function SectionPreview() {
             <Box
               className="markdown-body"
               dangerouslySetInnerHTML={{ __html: marked(introduction) }}
+            />
+            <Box
+              className="markdown-body"
+              dangerouslySetInnerHTML={{ __html: marked(trackContent) }}
+            />
+            <Box
+              className="markdown-body"
+              dangerouslySetInnerHTML={{ __html: marked(artistContent) }}
             />
           </Box>
         </GridItem>

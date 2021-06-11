@@ -6,6 +6,8 @@ const selectors = {
     selectAccessToken: (state: RootState) => state.spotify.accessToken,
     selectTracks: (state: RootState) => state.spotify.tracks,
     selectArtists: (state: RootState) => state.spotify.artists,
+    selectTrackContent: (state: RootState) => state.spotify.trackContent,
+    selectArtistContent: (state: RootState) => state.spotify.artistContent,
   },
   [reducerPath.reducers.github]: {
     selectAccessToken: (state: RootState) => state.github.accessToken,

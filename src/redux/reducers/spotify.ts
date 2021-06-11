@@ -3,15 +3,22 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { spotifyApi } from "../../apis/spotifyApi";
 import { AuthSuccess } from "../../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
+import { artistDataTransformer, trackDataTransformer } from "../../utils";
+import { getArtistString, getTrackString } from "../../utils/generator";
 
 type SpotifyState = {
   accessToken?: AuthSuccess;
   tracks?: Record<string, any>[];
   artists?: Record<string, any>[];
+  trackContent: string;
+  artistContent: string;
 };
 
 export const name = "spotify";
-const initialState: SpotifyState = {};
+const initialState: SpotifyState = {
+  trackContent: "",
+  artistContent: "",
+};
 
 const spotifySlice = createSlice({
   name,
@@ -35,6 +42,9 @@ const spotifySlice = createSlice({
         spotifyApi.endpoints.getTopTracks.matchFulfilled,
         (state, { payload }) => {
           state.tracks = payload.items;
+          state.trackContent = getTrackString(
+            trackDataTransformer(payload.items)
+          );
         }
       )
       .addMatcher(
@@ -42,6 +52,9 @@ const spotifySlice = createSlice({
         (state, { payload }) => {
           console.log(payload);
           state.artists = payload.items;
+          state.artistContent = getArtistString(
+            artistDataTransformer(payload.items)
+          );
         }
       );
   },

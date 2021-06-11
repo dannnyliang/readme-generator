@@ -15,7 +15,7 @@ function getSizeLevelFromRank(rank: number) {
   }
 }
 
-type Track = {
+export type PreviewTrack = {
   rank: number;
   name: string;
   url: string;
@@ -25,7 +25,7 @@ type Track = {
   }[];
 };
 
-function getTrackString(tracks: Track[]) {
+export function getTrackString(tracks: PreviewTrack[]) {
   const trackCountValid = tracks.length === 5;
   if (!trackCountValid) return "";
 
@@ -36,6 +36,8 @@ function getTrackString(tracks: Track[]) {
     tracks[2],
     tracks[4],
   ];
+
+  console.log("centeredTracks", centeredTracks);
 
   return `
   <br />
@@ -64,14 +66,14 @@ function getTrackString(tracks: Track[]) {
   `;
 }
 
-type Artist = {
+export type PreviewArtist = {
   rank: number;
   name: string;
   url: string;
   image: string;
 };
 
-function getArtistString(artists: Artist[]) {
+export function getArtistString(artists: PreviewArtist[]) {
   const artistCountValid = artists.length === 5;
   if (!artistCountValid) return "";
 
@@ -111,8 +113,8 @@ function getArtistString(artists: Artist[]) {
 }
 
 type GeneratorArgs = {
-  tracks: Track[];
-  artists: Artist[];
+  tracks: PreviewTrack[];
+  artists: PreviewArtist[];
   intro: string;
 };
 
