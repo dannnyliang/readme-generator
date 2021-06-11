@@ -1,5 +1,4 @@
-function getSizeLevelFromRank(rank) {
-  // eslint-disable-next-line default-case
+function getSizeLevelFromRank(rank: number) {
   switch (rank) {
     case 1:
       return 2;
@@ -11,11 +10,25 @@ function getSizeLevelFromRank(rank) {
       return 0;
     case 5:
       return 0;
+    default:
+      return 0;
   }
 }
 
-function getTrackString(tracks) {
+type Track = {
+  rank: number;
+  name: string;
+  url: string;
+  image: string;
+  artists: {
+    name: string;
+  }[];
+};
+
+function getTrackString(tracks: Track[]) {
   const trackCountValid = tracks.length === 5;
+  if (!trackCountValid) return "";
+
   const centeredTracks = [
     tracks[3],
     tracks[1],
@@ -24,8 +37,7 @@ function getTrackString(tracks) {
     tracks[4],
   ];
 
-  return trackCountValid
-    ? `
+  return `
   <br />
   <h1 align='center'>Top Tracks</h1>
   <p align='center'>
@@ -49,12 +61,20 @@ function getTrackString(tracks) {
       return `<p align='center'><a href='${track.url}'>${track.name}</a> - <em>${artists}</em></p>`;
     })
     .join("")}
-  `
-    : "";
+  `;
 }
 
-function getArtistString(artists) {
+type Artist = {
+  rank: number;
+  name: string;
+  url: string;
+  image: string;
+};
+
+function getArtistString(artists: Artist[]) {
   const artistCountValid = artists.length === 5;
+  if (!artistCountValid) return "";
+
   const centeredArtists = [
     artists[3],
     artists[1],
@@ -62,8 +82,7 @@ function getArtistString(artists) {
     artists[2],
     artists[4],
   ];
-  return artistCountValid
-    ? `
+  return `
   <br />
   <h1 align="center">Top Artists</h1>
   <p align='center'>
@@ -88,15 +107,20 @@ function getArtistString(artists) {
         `<p align='center'><em><a href='${artist.url}'>${artist.name}</a></em></p>`
     )
     .join("")}
-  `
-    : "";
+  `;
 }
 
-export default function ({
+type GeneratorArgs = {
+  tracks: Track[];
+  artists: Artist[];
+  intro: string;
+};
+
+function generator({
   tracks: unsortedTracks = [],
   artists: unsortedArtists = [],
   intro,
-}) {
+}: GeneratorArgs) {
   const tracks = unsortedTracks.map((track, index) => ({
     ...track,
     rank: index + 1,
@@ -117,3 +141,5 @@ ${intro}
 
   return introString + trackString + artistString;
 }
+
+export default generator;

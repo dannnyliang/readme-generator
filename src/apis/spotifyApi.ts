@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { TIME_RANGE } from "../constants";
+import { RootState } from "../redux";
+import reducerPath from "../redux/reducerPath";
 import selectors from "../redux/selectors";
-import { RootState } from "..";
 
 type TopTracksArgs = {
   limit?: number;
@@ -32,7 +33,7 @@ export type TopArtistsResponse = {
 };
 
 export const spotifyApi = createApi({
-  reducerPath: "apiSpotify",
+  reducerPath: reducerPath.apis.spotifyApi,
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.spotify.com",
     prepareHeaders: (headers, { getState }) => {

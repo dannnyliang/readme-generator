@@ -1,12 +1,13 @@
-import { name as githubReducerName } from "./reducers/github";
-import { name as spotifyReducerName } from "./reducers/spotify";
-import { RootState } from "..";
+import reducerPath from "./reducerPath";
+import { RootState } from ".";
 
 const selectors = {
-  [spotifyReducerName]: {
+  [reducerPath.reducers.spotify]: {
     selectAccessToken: (state: RootState) => state.spotify.accessToken,
+    selectTracks: (state: RootState) => state.spotify.tracks,
+    selectArtists: (state: RootState) => state.spotify.artists,
   },
-  [githubReducerName]: {
+  [reducerPath.reducers.github]: {
     selectAccessToken: (state: RootState) => state.github.accessToken,
     selectUser: (state: RootState) => state.github.user,
     selectReadme: (state: RootState) => state.github.readme,

@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import reducerPath from "../redux/reducerPath";
+
 export type AuthSuccess = {
   access_token: string;
   scope: string;
@@ -26,7 +28,7 @@ const {
 } = process.env;
 
 export const githubAppApi = createApi({
-  reducerPath: "apiGithubApp",
+  reducerPath: reducerPath.apis.githubAppApi,
   baseQuery: fetchBaseQuery({
     baseUrl: `${
       NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_PROXY : ""

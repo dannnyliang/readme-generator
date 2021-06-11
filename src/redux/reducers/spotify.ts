@@ -38,7 +38,7 @@ const spotifySlice = createSlice({
         }
       )
       .addMatcher(
-        spotifyApi.endpoints.getTopTracks.matchFulfilled,
+        spotifyApi.endpoints.getTopArtists.matchFulfilled,
         (state, { payload }) => {
           console.log(payload);
           state.artists = payload.items;

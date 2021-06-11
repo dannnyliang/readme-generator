@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import { RootState } from "../redux";
+import reducerPath from "../redux/reducerPath";
 import selectors from "../redux/selectors";
-import { RootState } from "..";
 
 export type GithubUser = Record<string, any>;
 export type GithubRepo = Record<string, any>;
 
 export const githubApi = createApi({
-  reducerPath: "apiGithub",
+  reducerPath: reducerPath.apis.githubApi,
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.github.com",
     prepareHeaders: (headers, { getState }) => {

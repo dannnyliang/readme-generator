@@ -1,9 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { GithubUser } from "../../apis/githubApi";
+import { GithubUser, githubApi } from "../../apis/githubApi";
 import { AuthSuccess } from "../../apis/githubApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
 import { splitReadmeContent } from "../../utils";
+import reducerPath from "../reducerPath";
 
 type GithubState = {
   accessToken?: AuthSuccess;
@@ -15,13 +16,12 @@ type GithubState = {
   introduction: string;
 };
 
-export const name = "github";
 const initialState: GithubState = {
   introduction: "",
 };
 
 const githubSlice = createSlice({
-  name,
+  name: reducerPath.reducers.github,
   initialState,
   reducers: {
     setAccessToken: (state, action: PayloadAction<AuthSuccess>) => {
@@ -35,30 +35,34 @@ const githubSlice = createSlice({
       window.localStorage.removeItem(LOCALSTORAGE_TOKEN.GITHUB);
       state.accessToken = undefined;
     },
-    setUser: (state, action: PayloadAction<GithubUser>) => {
-      state.user = action.payload;
-    },
-    setReadme: (
-      state,
-      action: PayloadAction<NonNullable<GithubState["readme"]>>
-    ) => {
-      state.readme = action.payload;
-      state.introduction = splitReadmeContent(action.payload.content)[0];
-    },
     setIntroduction: (state, action: PayloadAction<string>) => {
       state.introduction = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        githubApi.endpoints.getUser.matchFulfilled,
+        (state, { payload }) => {
+          state.user = payload;
+        }
+      )
+      .addMatcher(
+        githubApi.endpoints.getReadme.matchFulfilled,
+        (state, { payload }) => {
+          state.readme = {
+            sha: payload.sha,
+            content: payload.content,
+          };
+          state.introduction = splitReadmeContent(payload.content)[0];
+        }
+      );
+  },
 });
 
 /** ----- Actions ----- */
-export const {
-  setAccessToken,
-  clearAccessToken,
-  setUser,
-  setReadme,
-  setIntroduction,
-} = githubSlice.actions;
+export const { setAccessToken, clearAccessToken, setIntroduction } =
+  githubSlice.actions;
 
 /** ----- Reducer ----- */
 export default githubSlice.reducer;
