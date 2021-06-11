@@ -25,7 +25,7 @@ export type PreviewTrack = {
   }[];
 };
 
-export function getTrackString(tracks: PreviewTrack[]) {
+export function getTrackContent(tracks: PreviewTrack[]) {
   const trackCountValid = tracks.length === 5;
   if (!trackCountValid) return "";
 
@@ -36,8 +36,6 @@ export function getTrackString(tracks: PreviewTrack[]) {
     tracks[2],
     tracks[4],
   ];
-
-  console.log("centeredTracks", centeredTracks);
 
   return `
   <br />
@@ -73,7 +71,7 @@ export type PreviewArtist = {
   image: string;
 };
 
-export function getArtistString(artists: PreviewArtist[]) {
+export function getArtistContent(artists: PreviewArtist[]) {
   const artistCountValid = artists.length === 5;
   if (!artistCountValid) return "";
 
@@ -112,36 +110,10 @@ export function getArtistString(artists: PreviewArtist[]) {
   `;
 }
 
-type GeneratorArgs = {
-  tracks: PreviewTrack[];
-  artists: PreviewArtist[];
-  intro: string;
-};
-
-function generator({
-  tracks: unsortedTracks = [],
-  artists: unsortedArtists = [],
-  intro,
-}: GeneratorArgs) {
-  const tracks = unsortedTracks.map((track, index) => ({
-    ...track,
-    rank: index + 1,
-  }));
-  const artists = unsortedArtists.map((artist, index) => ({
-    ...artist,
-    rank: index + 1,
-  }));
-
-  const trackString = getTrackString(tracks);
-  const artistString = getArtistString(artists);
-
-  const introString = `
-<!--  Intro Section -->
-${intro}
-<!--  Intro Section -->
+export function getIntroductionContent(intro: string) {
+  return `
+  <!--  Intro Section -->
+  ${intro}
+  <!--  Intro Section -->
   `;
-
-  return introString + trackString + artistString;
 }
-
-export default generator;

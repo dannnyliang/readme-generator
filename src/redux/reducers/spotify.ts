@@ -4,7 +4,7 @@ import { spotifyApi } from "../../apis/spotifyApi";
 import { AuthSuccess } from "../../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../../constants";
 import { artistDataTransformer, trackDataTransformer } from "../../utils";
-import { getArtistString, getTrackString } from "../../utils/generator";
+import { getArtistContent, getTrackContent } from "../../utils/generator";
 
 type SpotifyState = {
   accessToken?: AuthSuccess;
@@ -42,7 +42,7 @@ const spotifySlice = createSlice({
         spotifyApi.endpoints.getTopTracks.matchFulfilled,
         (state, { payload }) => {
           state.tracks = payload.items;
-          state.trackContent = getTrackString(
+          state.trackContent = getTrackContent(
             trackDataTransformer(payload.items)
           );
         }
@@ -52,7 +52,7 @@ const spotifySlice = createSlice({
         (state, { payload }) => {
           console.log(payload);
           state.artists = payload.items;
-          state.artistContent = getArtistString(
+          state.artistContent = getArtistContent(
             artistDataTransformer(payload.items)
           );
         }
