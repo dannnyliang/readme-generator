@@ -2,13 +2,13 @@ import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import marked from "marked";
 
 import { useAppSelector } from "../hooks";
+import useReadme from "../hooks/useReadme";
 import selectors from "../redux/selectors";
 
 function SectionPreview() {
   const introduction = useAppSelector(selectors.github.selectIntroduction);
   const user = useAppSelector(selectors.github.selectUser);
-  const trackContent = useAppSelector(selectors.spotify.selectTrackContent);
-  const artistContent = useAppSelector(selectors.spotify.selectArtistContent);
+  const { trackContent, artistContent } = useReadme();
 
   return (
     <Box p={4}>

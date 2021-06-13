@@ -2,22 +2,24 @@ import { CopyIcon, DownloadIcon } from "@chakra-ui/icons";
 import { useClipboard } from "@chakra-ui/react";
 import { Button, Flex, HStack, Heading } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
-import { join } from "ramda";
+import { isNil, not } from "ramda";
+import { useState } from "react";
 
 import { useAppSelector } from "../hooks";
+import useReadme from "../hooks/useReadme";
 import selectors from "../redux/selectors";
-import { getIntroductionContent } from "../utils/generator";
 import AuthGithub from "./AuthGithub";
 import AuthSpotify from "./AuthSpotify";
+import ModalCommit from "./ModalCommit";
 
 function NavBar() {
-  const introduction = useAppSelector(selectors.github.selectIntroduction);
-  const introductionContent = getIntroductionContent(introduction);
-  const trackContent = useAppSelector(selectors.spotify.selectTrackContent);
-  const artistContent = useAppSelector(selectors.spotify.selectArtistContent);
-
-  const readme = join("", [introductionContent, trackContent, artistContent]);
+  const [isOpen, setIsOpen] = useState(false);
+  const { readme } = useReadme();
   const { onCopy } = useClipboard(readme);
+  const rawReadme = useAppSelector(selectors.github.selectReadme);
+  const user = useAppSelector(selectors.github.selectUser);
+
+  const canCommit = not(isNil(rawReadme)) && not(isNil(user));
 
   const handleExport = () => {
     const blob = new Blob([readme], {
@@ -25,6 +27,9 @@ function NavBar() {
     });
     saveAs(blob, "README.md");
   };
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   return (
     <Flex
@@ -48,10 +53,16 @@ function NavBar() {
           <span>Export Markdown</span>
           <DownloadIcon ml={2} />
         </Button>
-        <Button variant="outline" cursor="pointer" colorScheme="red">
+        <Button
+          variant="outline"
+          cursor="pointer"
+          colorScheme="red"
+          onClick={handleOpen}
+        >
           Commit
         </Button>
       </HStack>
+      <ModalCommit isOpen={isOpen && canCommit} onClose={handleClose} />
     </Flex>
   );
 }

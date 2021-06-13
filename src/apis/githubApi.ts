@@ -6,6 +6,19 @@ import selectors from "../redux/selectors";
 
 export type GithubUser = Record<string, any>;
 export type GithubRepo = Record<string, any>;
+type PutReadmeResponse = {
+  commit: Record<string, any>;
+  content: Record<string, any>;
+};
+type PutReadmeArgs = {
+  message: string;
+  content: string;
+  sha: string;
+  commiter: {
+    name: string;
+    email: string;
+  };
+};
 
 export const githubApi = createApi({
   reducerPath: reducerPath.apis.githubApi,
@@ -29,7 +42,18 @@ export const githubApi = createApi({
     getReadme: builder.query<GithubRepo, string>({
       query: (username) => `repos/${username}/${username}/contents/README.md`,
     }),
+    putReadme: builder.mutation<PutReadmeResponse, PutReadmeArgs>({
+      query: (args) => {
+        const username = args.commiter.name;
+        return {
+          url: `https://api.github.com/repos/${username}/${username}/contents/README.md`,
+          method: "PUT",
+          body: args,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetUserQuery, useGetReadmeQuery } = githubApi;
+export const { useGetUserQuery, useGetReadmeQuery, usePutReadmeMutation } =
+  githubApi;
