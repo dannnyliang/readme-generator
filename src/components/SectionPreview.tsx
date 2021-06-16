@@ -7,6 +7,7 @@ import useReadme from "../hooks/useReadme";
 import selectors from "../redux/selectors";
 import { gfmStyles } from "../styles/gfmStyles";
 import StyledFrame from "./StyledFrame";
+import UserInfo from "./UserInfo";
 
 const GFMStyle = createGlobalStyle`
   ${gfmStyles}
@@ -22,12 +23,12 @@ function SectionPreview() {
 
   return (
     <Box p={4}>
-      <Heading size="lg" mb={4}>
+      <Heading size="lg" mb={12}>
         Preview
       </Heading>
       <Grid gap={0} templateColumns="repeat(4, 1fr)" mx={-4}>
-        <GridItem colSpan={1} px={4}>
-          profile
+        <GridItem colSpan={1} px={4} mt={-8}>
+          <UserInfo />
         </GridItem>
         <GridItem colSpan={3} px={4}>
           <Box p={6} border="1px" borderColor="#e1e4e8" bgColor="white">
