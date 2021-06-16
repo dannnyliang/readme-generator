@@ -27,7 +27,11 @@ function SectionIntro() {
           </Link>
         )}
       </HStack>
-      <AutoResizeTextarea value={introduction} onChange={handleChange} />
+      <AutoResizeTextarea
+        value={introduction}
+        bgColor="white"
+        onChange={handleChange}
+      />
     </Box>
   );
 }
