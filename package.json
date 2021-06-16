@@ -1,33 +1,14 @@
 {
-  "name": "dannnyliang",
+  "name": "readme-generator",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "date-fns": "^2.21.1",
-    "marked": "^1.1.1",
-    "notistack": "^1.0.1",
-    "query-string": "^6.13.2",
-    "ramda": "^0.27.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-query": "^2.22.0",
-    "react-scripts": "3.4.3",
-    "styled-components": "^5.2.0"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "commit": "cz",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -39,6 +20,71 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.13",
+    "@chakra-ui/react": "^1.6.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@primer/octicons-react": "^14.2.2",
+    "@reduxjs/toolkit": "^1.6.0",
+    "@types/react-frame-component": "^4.1.1",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^4",
+    "marked": "^2.0.7",
+    "query-string": "^7.0.0",
+    "ramda": "^0.27.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-frame-component": "^5.0.1",
+    "react-redux": "^7.2.4",
+    "react-scripts": "4.0.3",
+    "react-textarea-autosize": "^8.3.3",
+    "redux": "^4.1.0",
+    "styled-components": "^5.3.0",
+    "typescript": "^4.1.2",
+    "use-query-params": "^1.2.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/file-saver": "^2.0.2",
+    "@types/jest": "^26.0.23",
+    "@types/marked": "^2.0.3",
+    "@types/node": "^15.6.1",
+    "@types/ramda": "^0.27.40",
+    "@types/react": "^17.0.8",
+    "@types/react-dom": "^17.0.5",
+    "@types/react-redux": "^7.1.16",
+    "@types/styled-components": "^5.1.10",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-parser-babylon": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "importSort": {
+    ".js, .jsx, .es6, .es, .mjs, .ts, .tsx": {
+      "parser": "babylon",
+      "style": "module"
+    }
+  },
+  "lint-staged": {
+    "**/*{.js,jsx,ts,tsx}": [
+      "import-sort --write",
+      "eslint --fix --quiet",
+      "git add"
     ]
   }
 }
