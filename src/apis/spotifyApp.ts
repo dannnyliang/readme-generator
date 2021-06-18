@@ -25,16 +25,12 @@ const {
   REACT_APP_SPOTIFY_CLIENT_ID,
   REACT_APP_SPOTIFY_SECRET_ID,
   REACT_APP_SPOTIFY_REDIRECT_URI,
-  REACT_APP_DEVELOPMENT_PROXY,
-  NODE_ENV,
 } = process.env;
 
 export const spotifyAppApi = createApi({
   reducerPath: reducerPath.apis.spotifyAppApi,
   baseQuery: fetchBaseQuery({
-    baseUrl: `${
-      NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_PROXY : ""
-    }https://accounts.spotify.com/api`,
+    baseUrl: `https://accounts.spotify.com/api`,
     prepareHeaders: (headers) => {
       const authorizationCode = btoa(
         `${REACT_APP_SPOTIFY_CLIENT_ID}:${REACT_APP_SPOTIFY_SECRET_ID}`

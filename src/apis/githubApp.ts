@@ -20,19 +20,12 @@ type AuthArgs = {
   code: string;
 };
 
-const {
-  REACT_APP_GITHUB_CLIENT_ID,
-  REACT_APP_GITHUB_SECRET_ID,
-  REACT_APP_DEVELOPMENT_PROXY,
-  NODE_ENV,
-} = process.env;
+const { REACT_APP_API_HOST } = process.env;
 
 export const githubAppApi = createApi({
   reducerPath: reducerPath.apis.githubAppApi,
   baseQuery: fetchBaseQuery({
-    baseUrl: `${
-      NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_PROXY : ""
-    }https://github.com`,
+    baseUrl: `${REACT_APP_API_HOST}`,
     prepareHeaders: (headers) => {
       headers.set("accept", "application/json");
       return headers;
@@ -40,17 +33,7 @@ export const githubAppApi = createApi({
   }),
   endpoints: (builder) => ({
     accessToken: builder.mutation<AuthResponse, AuthArgs>({
-      query: (args) => {
-        return {
-          url: "/login/oauth/access_token",
-          method: "POST",
-          body: {
-            code: args.code,
-            client_id: REACT_APP_GITHUB_CLIENT_ID,
-            client_secret: REACT_APP_GITHUB_SECRET_ID,
-          },
-        };
-      },
+      query: (args) => `github-token?code=${args.code}`,
     }),
   }),
 });
