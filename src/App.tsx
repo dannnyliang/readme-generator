@@ -2,7 +2,11 @@ import { Box, Container, useToast } from "@chakra-ui/react";
 import { isNil } from "ramda";
 import { useEffect } from "react";
 
-import { useGetReadmeQuery, useGetUserQuery } from "./apis/githubApi";
+import {
+  GetRepositoryError,
+  useGetReadmeQuery,
+  useGetUserQuery,
+} from "./apis/githubApi";
 import {
   SpotifyApiError,
   useGetMeQuery,
@@ -54,7 +58,7 @@ function App() {
   useGetUserQuery(undefined, {
     skip: isNil(githubAccessToken),
   });
-  useGetReadmeQuery(user?.login, {
+  const { error: readmeError } = useGetReadmeQuery(user?.login, {
     skip: isNil(user),
   });
 
@@ -69,6 +73,18 @@ function App() {
       dispatch(addError(newError));
     }
   }, [dispatch, spotifyUserError]);
+
+  useEffect(() => {
+    if (readmeError && "data" in readmeError) {
+      const errorContent = readmeError.data as GetRepositoryError;
+      const newError = {
+        title: "Not found personnal readme repository",
+        message: errorContent.message,
+        info: errorContent,
+      };
+      dispatch(addError(newError));
+    }
+  }, [dispatch, readmeError]);
 
   useEffect(() => {
     if (errors.length > 0) {

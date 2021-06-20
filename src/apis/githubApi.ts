@@ -20,6 +20,11 @@ type PutReadmeArgs = {
   };
 };
 
+export type GetRepositoryError = {
+  documentation_url: string;
+  message: string;
+};
+
 export const githubApi = createApi({
   reducerPath: reducerPath.apis.githubApi,
   baseQuery: fetchBaseQuery({
