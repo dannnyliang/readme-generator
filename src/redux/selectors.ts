@@ -13,6 +13,9 @@ const selectors = {
     selectReadme: (state: RootState) => state.github.readme,
     selectIntroduction: (state: RootState) => state.github.introduction,
   },
+  [reducerPath.reducers.error]: {
+    selectErrors: (state: RootState) => state.error.errors,
+  },
 };
 
 export default selectors;

@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, useToast } from "@chakra-ui/react";
 import { isNil } from "ramda";
 import { useEffect } from "react";
 
@@ -18,6 +18,8 @@ import { addError } from "./redux/reducers/error";
 import selectors from "./redux/selectors";
 
 function App() {
+  const toast = useToast();
+  const errors = useAppSelector(selectors.error.selectErrors);
   const dispatch = useAppDispatch();
 
   const githubAccessToken = useAppSelector(selectors.github.selectAccessToken);
@@ -64,6 +66,18 @@ function App() {
       dispatch(addError(newError));
     }
   }, [dispatch, spotifyUserError]);
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((error) => {
+        toast({
+          title: error.title,
+          status: "error",
+          isClosable: true,
+        });
+      });
+    }
+  }, [errors, toast]);
 
   return (
     <Box bgColor="gray.50">
