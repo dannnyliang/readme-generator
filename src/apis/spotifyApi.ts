@@ -31,6 +31,10 @@ export type TopArtistsResponse = {
   next: string;
   previous: string;
 };
+export type SpotifyApiError = {
+  status: number;
+  message: string;
+};
 
 export const spotifyApi = createApi({
   reducerPath: reducerPath.apis.spotifyApi,
@@ -47,6 +51,9 @@ export const spotifyApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getMe: builder.query<any, void>({
+      query: () => "v1/me",
+    }),
     getTopTracks: builder.query<TopTracksResponse, TopTracksArgs>({
       query: (args) => {
         const { limit = 5, timeRange = TIME_RANGE.SHORT } = args;
@@ -62,4 +69,5 @@ export const spotifyApi = createApi({
   }),
 });
 
-export const { useGetTopTracksQuery, useGetTopArtistsQuery } = spotifyApi;
+export const { useGetMeQuery, useGetTopTracksQuery, useGetTopArtistsQuery } =
+  spotifyApi;
