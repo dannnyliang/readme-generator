@@ -8,7 +8,7 @@ export type AuthSuccess = {
   token_type: string;
 };
 
-type AuthFail = {
+export type AuthFail = {
   error: string;
   error_description: string;
   error_uri: string;

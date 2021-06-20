@@ -15,10 +15,11 @@ import { any, isNil } from "ramda";
 import { useEffect } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
 
-import { useAccessTokenMutation } from "../apis/githubApp";
+import { AuthFail, useAccessTokenMutation } from "../apis/githubApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Github from "../icons/Github";
+import { addError, removeError } from "../redux/reducers/error";
 import { clearAccessToken, setAccessToken } from "../redux/reducers/github";
 import selectors from "../redux/selectors";
 
@@ -44,7 +45,7 @@ function AuthGithub() {
   const toast = useToast();
   const dispatch = useAppDispatch();
   const [code] = useQueryParam("code", StringParam);
-  const [getAccessToken, { isLoading }] = useAccessTokenMutation();
+  const [getAccessToken, { isLoading, error }] = useAccessTokenMutation();
 
   useEffect(() => {
     if (accessToken) return;
@@ -58,22 +59,30 @@ function AuthGithub() {
   }, [dispatch, accessToken]);
 
   useEffect(() => {
+    if (error && "data" in error) {
+      const errorContent = error.data as AuthFail;
+      dispatch(
+        addError({
+          title: "Login Github fail",
+          message: errorContent.error_description,
+          info: errorContent,
+        })
+      );
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
     if (accessToken) return;
 
     if (code && window.location.pathname.includes("github")) {
-      getAccessToken({ code }).then((res) => {
-        if ("error" in res || "error" in res.data) {
-          console.error(res);
-          toast({
-            title: "登入 Github 失敗",
-            status: "error",
-            isClosable: true,
-          });
-          return;
-        }
-        dispatch(setAccessToken(res.data));
-        window.location.replace("/");
-      });
+      getAccessToken({ code })
+        .unwrap()
+        .then((res) => {
+          if ("error" in res) return;
+          dispatch(removeError("Login Github fail"));
+          dispatch(setAccessToken(res));
+          window.location.replace("/");
+        });
     }
   }, [accessToken, code, dispatch, getAccessToken, toast]);
 

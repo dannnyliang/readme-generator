@@ -28,7 +28,10 @@ function App() {
   );
   const user = useAppSelector(selectors.github.selectUser);
 
-  const { data: spotifyUser, error: spotifyUserError } = useGetMeQuery();
+  const { data: spotifyUser, error: spotifyUserError } = useGetMeQuery(
+    undefined,
+    { skip: isNil(spotifyAccessToken) }
+  );
 
   useGetTopTracksQuery(
     {

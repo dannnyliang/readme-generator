@@ -15,10 +15,11 @@ import { any, isNil } from "ramda";
 import { useEffect } from "react";
 import { StringParam, useQueryParam } from "use-query-params";
 
-import { useAccessTokenMutation } from "../apis/spotifyApp";
+import { AuthFail, useAccessTokenMutation } from "../apis/spotifyApp";
 import { LOCALSTORAGE_TOKEN } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Spotify from "../icons/Spotify";
+import { addError, removeError } from "../redux/reducers/error";
 import { clearAccessToken, setAccessToken } from "../redux/reducers/spotify";
 import selectors from "../redux/selectors";
 
@@ -55,7 +56,7 @@ function AuthSpotify() {
   const toast = useToast();
   const dispatch = useAppDispatch();
   const [code] = useQueryParam("code", StringParam);
-  const [getAccessToken, { isLoading }] = useAccessTokenMutation();
+  const [getAccessToken, { isLoading, error }] = useAccessTokenMutation();
 
   useEffect(() => {
     if (accessToken) return;
@@ -69,22 +70,30 @@ function AuthSpotify() {
   }, [dispatch, accessToken]);
 
   useEffect(() => {
+    if (error && "data" in error) {
+      const errorContent = error.data as AuthFail;
+      dispatch(
+        addError({
+          title: "Login Spotify fail",
+          message: errorContent.error_description,
+          info: errorContent,
+        })
+      );
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
     if (accessToken) return;
 
     if (code && window.location.pathname.includes("spotify")) {
-      getAccessToken({ code }).then((res) => {
-        if ("error" in res || "error" in res.data) {
-          console.error(res);
-          toast({
-            title: "登入 Spotify 失敗",
-            status: "error",
-            isClosable: true,
-          });
-          return;
-        }
-        dispatch(setAccessToken(res.data));
-        window.location.replace("/");
-      });
+      getAccessToken({ code })
+        .unwrap()
+        .then((data) => {
+          if ("error" in data) return;
+          dispatch(removeError("Login Spotify fail"));
+          dispatch(setAccessToken(data));
+          window.location.replace("/");
+        });
     }
   }, [accessToken, code, dispatch, getAccessToken, toast]);
 
