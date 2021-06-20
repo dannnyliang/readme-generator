@@ -2,6 +2,7 @@ const reducerPath = {
   reducers: {
     github: "github",
     spotify: "spotify",
+    error: "error",
   },
   apis: {
     githubAppApi: "apiGithubApp",

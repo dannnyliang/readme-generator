@@ -4,6 +4,7 @@ import { githubApi } from "../apis/githubApi";
 import { githubAppApi } from "../apis/githubApp";
 import { spotifyApi } from "../apis/spotifyApi";
 import { spotifyAppApi } from "../apis/spotifyApp";
+import error from "./reducers/error";
 import github from "./reducers/github";
 import spotify from "./reducers/spotify";
 
@@ -18,6 +19,7 @@ export const createStore = (
       [spotifyApi.reducerPath]: spotifyApi.reducer,
       github,
       spotify,
+      error,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
