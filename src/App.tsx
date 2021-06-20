@@ -1,21 +1,32 @@
 import { Box, Container } from "@chakra-ui/react";
 import { isNil } from "ramda";
+import { useEffect } from "react";
 
 import { useGetReadmeQuery, useGetUserQuery } from "./apis/githubApi";
-import { useGetTopArtistsQuery, useGetTopTracksQuery } from "./apis/spotifyApi";
+import {
+  SpotifyApiError,
+  useGetMeQuery,
+  useGetTopArtistsQuery,
+  useGetTopTracksQuery,
+} from "./apis/spotifyApi";
 import NavBar from "./components/NavBar";
 import SectionIntro from "./components/SectionIntro";
 import SectionPreview from "./components/SectionPreview";
 import { TIME_RANGE } from "./constants";
-import { useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { addError } from "./redux/reducers/error";
 import selectors from "./redux/selectors";
 
 function App() {
+  const dispatch = useAppDispatch();
+
   const githubAccessToken = useAppSelector(selectors.github.selectAccessToken);
   const spotifyAccessToken = useAppSelector(
     selectors.spotify.selectAccessToken
   );
   const user = useAppSelector(selectors.github.selectUser);
+
+  const { data: spotifyUser, error: spotifyUserError } = useGetMeQuery();
 
   useGetTopTracksQuery(
     {
@@ -23,7 +34,7 @@ function App() {
       timeRange: TIME_RANGE.SHORT,
     },
     {
-      skip: isNil(spotifyAccessToken),
+      skip: isNil(spotifyAccessToken) || isNil(spotifyUser),
     }
   );
   useGetTopArtistsQuery(
@@ -32,7 +43,7 @@ function App() {
       timeRange: TIME_RANGE.SHORT,
     },
     {
-      skip: isNil(spotifyAccessToken),
+      skip: isNil(spotifyAccessToken) || isNil(spotifyUser),
     }
   );
   useGetUserQuery(undefined, {
@@ -41,6 +52,18 @@ function App() {
   useGetReadmeQuery(user?.login, {
     skip: isNil(user),
   });
+
+  useEffect(() => {
+    if (spotifyUserError && "data" in spotifyUserError) {
+      const errorContent = spotifyUserError.data as SpotifyApiError;
+      const newError = {
+        title: "Fetch Spotify api fail",
+        message: errorContent.message,
+        info: errorContent,
+      };
+      dispatch(addError(newError));
+    }
+  }, [dispatch, spotifyUserError]);
 
   return (
     <Box bgColor="gray.50">
