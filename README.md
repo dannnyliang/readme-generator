@@ -1,27 +1,22 @@
-<h1 align='center'>Readme Generator</h1>
-<p align='center'>
-  markdown 即時預覽編輯器，並結合 Spotify api 最近喜愛歌曲、歌手資料，輕鬆更新 Github profile 專案
-</p>
+# Readme Generator
+
+🌐 [Site](https://stackoverflow-listing.vercel.app/)
+
+Provide a real-time preview markdown editor with [gfm](https://github.github.com/gfm/) style, and can fetch currently favorite artists and tracks from Spotify. You can finally copy plain markdown text or export .md file or directly commit to personnal Readme repository.
 
 ## Features
-- markdown 編輯器 + 即時預覽
-- Spotify, Github OAuth 登入
-- 抓取最近喜愛歌曲、歌手 ([Spotify top artists & tracks api](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/))
-- 抓取目前 Github profile 專案的 `README.md`
-- 提交 commit 到 Github profile
+- Real-time preview markdown editor with [gfm](https://github.github.com/gfm/) style
+- Mock Github user page and preview personnal Readme
+- Spotify, Github OAuth
+- [Need Spotify authorization] Fetch currently favorite artists and tracks from Spotify
+([Spotify top artists & tracks api](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/))
+- [Need Github Authorization] Fetch personnal Readme repository content
+- [Need Github Authorization] Commit to personnal Readme repository
+- Copy markdown content
+- Export markdown file
 
 ## Tools
-- 專案建置: [create-react-app](http://create-react-app.dev/)
-- UI: [material-ui](https://material-ui.com/), [styled-component](https://styled-components.com/)
+- UI: [chakra-ui](https://chakra-ui.com/), [styled-component](https://styled-components.com/)
 - markdown parser: [marked](https://github.com/markedjs/marked)
-- data fetching: [react-query](https://react-query.tanstack.com/)
-- hoisting: vercel zeit
-
-## Todo
-- 預覽優化
-  - [ ] 模擬 Github 個人頁
-  - [ ] 預覽區塊套用 gfm 樣式
-- 編輯優化
-  - [ ] Github RichTextEditor
-  - [ ] 自定義 banner 圖片
-  - [ ] 自定義 logo icon link
+- data fetching: [rtk-query](https://redux-toolkit.js.org/rtk-query/overview)
+- hoisting: [vercel](https://vercel.com/docs)
